@@ -204,7 +204,7 @@ export function TicketDetail({ ticket }: TicketDetailProps) {
                 throw new Error(`HTTP ${response.status}`);
             }
             const markdown = await response.text();
-            const prompt = `/plan\n\n${markdown}\n\nVytvoř plán opravy / implementace v docs/tasks/sprint.yaml a handoff soubor docs/handoff/TASK-XXXX.md.`;
+            const prompt = `/validate\n\n${markdown}\n\nZvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
             await navigator.clipboard.writeText(prompt);
             toast.success('Zkopírováno do schránky');
         } catch (error) {

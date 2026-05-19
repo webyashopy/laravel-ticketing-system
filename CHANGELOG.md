@@ -7,6 +7,12 @@ verzování dle [SemVer](https://semver.org/lang/cs/).
 
 ## [Nezveřejněno]
 
+### Opraveno
+- Tlačítko „Kopírovat Claude prompt" v detailu tiketu generovalo prompt
+  začínající příkazem `/plan`. Nyní vrací `/validate` — vstupní krok bugfix
+  workflow (analýza bugu a jeho příčiny). Upravena i závěrečná instrukce
+  promptu, aby odpovídala validate workflow.
+
 ### Přidáno
 - Skeleton balíčku — Spatie Package Tools, Composer + npm manifesty,
   service provider, Orchestra Testbench setup.
