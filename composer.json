@@ -1,0 +1,52 @@
+{
+    "name": "webyashopy/laravel-ticketing-system",
+    "description": "Znovupoužitelný bug-tracker / ticketing modul pro Laravel (Inertia + React).",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Petr Kalous"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "laravel/framework": "^12.0",
+        "inertiajs/inertia-laravel": "^2.0",
+        "spatie/laravel-package-tools": "^1.16",
+        "symfony/process": "^7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webyashopy\\Tickets\\": "src/",
+            "Webyashopy\\Tickets\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webyashopy\\Tickets\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "pest"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webyashopy\\Tickets\\TicketsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
