@@ -7,6 +7,11 @@ verzování dle [SemVer](https://semver.org/lang/cs/).
 
 ## [Nezveřejněno]
 
+### Změněno
+- npm skript `prepare` (`npm run build`) — balíček lze instalovat přímo
+  z gitu jako dependency; `dist/` se sestaví automaticky při `npm install`
+  (zůstává mimo verzování).
+
 ### Opraveno
 - Tlačítko „Kopírovat Claude prompt" v detailu tiketu generovalo prompt
   začínající příkazem `/plan`. Nyní vrací `/validate` — vstupní krok bugfix

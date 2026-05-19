@@ -19,7 +19,8 @@
     },
     "scripts": {
         "build": "tsc --noEmit && vite build",
-        "type-check": "tsc --noEmit"
+        "type-check": "tsc --noEmit",
+        "prepare": "npm run build"
     },
     "peerDependencies": {
         "@inertiajs/react": "^2.0.0",
