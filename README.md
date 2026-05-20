@@ -26,9 +26,97 @@ with a React/Inertia frontend.
 
 ## Installation
 
+### 1) Composer + npm package
+
 ```bash
 composer require webyashopy/laravel-ticketing-system
 npm install github:webyashopy/laravel-ticketing-system
+```
+
+### 2) Publish config and migrations
+
+```bash
+php artisan vendor:publish --provider="Webyashopy\Tickets\TicketsServiceProvider"
+php artisan migrate
+```
+
+### 3) **Tailwind v4 + DaisyUI v5 setup (REQUIRED)**
+
+The package uses DaisyUI component classes (`.btn`, `.input`, `.select`, `.card`).
+Tailwind CSS is always built in the host application, so you must register the
+DaisyUI plugin in **your** `resources/css/app.css`:
+
+```css
+@import 'tailwindcss';
+
+/* DaisyUI plugin — component classes from the package */
+@plugin "daisyui" {
+    themes: light --default;
+    logs: false;
+}
+
+/* Source path for JIT — so Tailwind picks up DaisyUI classes from dist/ */
+@source '../../node_modules/@webyashopy/ticketing-system-ui/dist/**/*.{js,mjs,cjs}';
+```
+
+> ⚠️ **Without this step** components render as "ghosts" (DOM is correct,
+> but `.btn`/`.card`/`.input` classes have no CSS rule). Symptoms: buttons
+> without background, inputs without border, cards without shadow.
+
+The `daisyui` package is installed automatically as a transitive npm dependency.
+
+### 4) Sonner Toaster (notifications)
+
+The package calls `toast()` from [`sonner`](https://sonner.emilkowal.ski/) —
+the host app must have `<Toaster />` in its root layout:
+
+```tsx
+import { Toaster } from 'sonner';
+
+// ...inside the root layout
+<Toaster position="top-right" richColors closeButton />
+```
+
+### 5) Inertia pages and routes
+
+Create two thin Inertia wrappers in your app that wrap the package's components
+in your own `AppLayout`:
+
+```tsx
+// resources/js/pages/tickets/index.tsx
+import { TicketsIndexPage, type TicketsListProps } from '@webyashopy/ticketing-system-ui';
+import AppLayout from '@/layouts/app-layout';
+
+export default function TicketsIndex(props: TicketsListProps) {
+    return (
+        <AppLayout>
+            <TicketsIndexPage {...props} />
+        </AppLayout>
+    );
+}
+```
+
+```tsx
+// resources/js/pages/tickets/show.tsx
+import { TicketDetailPage, type Ticket } from '@webyashopy/ticketing-system-ui';
+import AppLayout from '@/layouts/app-layout';
+
+export default function TicketShow({ ticket }: { ticket: Ticket }) {
+    return (
+        <AppLayout>
+            <TicketDetailPage ticket={ticket} />
+        </AppLayout>
+    );
+}
+```
+
+### 6) Global "Report a bug" FAB (optional)
+
+```tsx
+import { TicketsFab } from '@webyashopy/ticketing-system-ui';
+
+// ...inside the root layout
+<TicketsFab />
 ```
 
 ## Architecture

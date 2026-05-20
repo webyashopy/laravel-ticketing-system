@@ -26,9 +26,97 @@ s React/Inertia frontendem.
 
 ## Instalace
 
+### 1) Composer + npm balíček
+
 ```bash
 composer require webyashopy/laravel-ticketing-system
 npm install github:webyashopy/laravel-ticketing-system
+```
+
+### 2) Publish konfigurace a migrace
+
+```bash
+php artisan vendor:publish --provider="Webyashopy\Tickets\TicketsServiceProvider"
+php artisan migrate
+```
+
+### 3) **Tailwind v4 + DaisyUI v5 setup (POVINNÉ)**
+
+Balíček používá DaisyUI komponentní třídy (`.btn`, `.input`, `.select`, `.card`).
+Tailwind CSS se vždy buildí v hostitelské aplikaci, takže DaisyUI plugin musíš
+zaregistrovat ve **svém** `resources/css/app.css`:
+
+```css
+@import 'tailwindcss';
+
+/* DaisyUI plugin — komponentní třídy z balíčku */
+@plugin "daisyui" {
+    themes: light --default;
+    logs: false;
+}
+
+/* Source path pro JIT — aby Tailwind zachytil DaisyUI třídy z dist/ balíčku */
+@source '../../node_modules/@webyashopy/ticketing-system-ui/dist/**/*.{js,mjs,cjs}';
+```
+
+> ⚠️ **Bez tohoto kroku** se komponenty zobrazí jako "duchové" (DOM správně,
+> ale třídy `.btn`/`.card`/`.input` nemají žádné CSS pravidlo). Symptom:
+> tlačítka bez pozadí, inputy bez borderu, karty bez stínu.
+
+`daisyui` package se nainstaluje automaticky jako transitive npm dependency.
+
+### 4) Sonner Toaster (notifikace)
+
+Balíček volá `toast()` ze [`sonner`](https://sonner.emilkowal.ski/) — host
+aplikace musí mít `<Toaster />` v root layoutu:
+
+```tsx
+import { Toaster } from 'sonner';
+
+// ...uvnitř root layoutu
+<Toaster position="top-right" richColors closeButton />
+```
+
+### 5) Inertia stránky a routy
+
+Vytvoř ve své aplikaci dvě thin Inertia wrappery, které obalí komponenty
+balíčku do svého `AppLayout`:
+
+```tsx
+// resources/js/pages/tickets/index.tsx
+import { TicketsIndexPage, type TicketsListProps } from '@webyashopy/ticketing-system-ui';
+import AppLayout from '@/layouts/app-layout';
+
+export default function TicketsIndex(props: TicketsListProps) {
+    return (
+        <AppLayout>
+            <TicketsIndexPage {...props} />
+        </AppLayout>
+    );
+}
+```
+
+```tsx
+// resources/js/pages/tickets/show.tsx
+import { TicketDetailPage, type Ticket } from '@webyashopy/ticketing-system-ui';
+import AppLayout from '@/layouts/app-layout';
+
+export default function TicketShow({ ticket }: { ticket: Ticket }) {
+    return (
+        <AppLayout>
+            <TicketDetailPage ticket={ticket} />
+        </AppLayout>
+    );
+}
+```
+
+### 6) Globální FAB „Nahlásit bug" (volitelné)
+
+```tsx
+import { TicketsFab } from '@webyashopy/ticketing-system-ui';
+
+// ...uvnitř root layoutu
+<TicketsFab />
 ```
 
 ## Architektura
