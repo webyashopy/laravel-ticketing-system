@@ -30,21 +30,33 @@ use Webyashopy\Tickets\Models\Ticket;
  *   1. ![screenshot-1]({signed_url_1})
  *   2. ![screenshot-2]({signed_url_2})
  *
+ *   ## Komentáře
+ *
+ *   ### 1. Jan Novák — 2026-05-06 15:10
+ *
+ *   > tělo komentáře jako blockquote
+ *
  * Signed URL screenshotů má TTL `config('tickets.signed_url_ttl_hours')`,
  * default 24 h. Po expiraci jsou nedostupné — Claude WebFetch musí
  * stáhnout obrázky během této doby.
+ *
+ * Sekce „Komentáře" se vynechává úplně, pokud ticket žádné nemá (stejně
+ * jako „Screenshoty" u ticketu bez příloh). Tělo komentáře je odsazené
+ * jako blockquote (`> `), aby nadpis napsaný uživatelem uvnitř komentáře
+ * (např. „# Ticket #…" nebo „## Popis") nerozbil strukturu exportu.
  */
 final class TicketMarkdownExporter
 {
     /**
      * Vrátí markdown reprezentaci ticketu.
      *
-     * Předpokládá, že volající už eager-loadnul `attachments` a `creator`
-     * (není to tvrdá podmínka — `loadMissing` zajistí konzistenci).
+     * Předpokládá, že volající už eager-loadnul `attachments`, `creator`
+     * a `comments.author` (není to tvrdá podmínka — `loadMissing` zajistí
+     * konzistenci a zabrání N+1 při volání z hromadného exportu).
      */
     public function export(Ticket $ticket): string
     {
-        $ticket->loadMissing(['creator', 'attachments']);
+        $ticket->loadMissing(['creator', 'attachments', 'comments.author']);
 
         $lines = [];
 
@@ -106,6 +118,28 @@ final class TicketMarkdownExporter
             }
 
             $lines[] = '';
+        }
+
+        // Komentáře (chronologicky, vč. zavřených ticketů)
+        if ($ticket->comments->isNotEmpty()) {
+            $lines[] = '## Komentáře';
+            $lines[] = '';
+
+            foreach ($ticket->comments as $i => $comment) {
+                $authorName = $comment->author?->name ?? '—';
+                $commentedAt = $comment->created_at?->format('Y-m-d H:i') ?? '—';
+
+                $lines[] = sprintf('### %d. %s — %s', $i + 1, $authorName, $commentedAt);
+                $lines[] = '';
+
+                // Tělo je raw Markdown od uživatele — odsazení jako blockquote,
+                // ať nadpis napsaný v komentáři nerozbije strukturu exportu.
+                foreach (explode("\n", (string) $comment->body) as $bodyLine) {
+                    $lines[] = $bodyLine === '' ? '>' : '> ' . $bodyLine;
+                }
+
+                $lines[] = '';
+            }
         }
 
         return implode("\n", $lines);

@@ -96,7 +96,7 @@ class TicketsSyncExportCommand extends Command
         // Pro stabilní názvy souborů použijeme auto-increment id (ne UUID).
         Ticket::query()
             ->orderBy('id')
-            ->with(['creator', 'closer', 'attachments'])
+            ->with(['creator', 'closer', 'attachments', 'comments.author'])
             ->chunk(100, function ($tickets) use ($exporter, $basePath, &$counts): void {
                 foreach ($tickets as $ticket) {
                     $bucket = $ticket->status === TicketStatus::CLOSED ? 'closed' : 'open';

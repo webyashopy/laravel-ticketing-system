@@ -6,6 +6,7 @@ namespace Webyashopy\Tickets\Tests\Feature\Tickets;
 
 use Webyashopy\Tickets\Models\Ticket;
 use Webyashopy\Tickets\Models\TicketAttachment;
+use Webyashopy\Tickets\Models\TicketComment;
 
 /**
  * Markdown export endpoint pro Claude Code.
@@ -98,6 +99,65 @@ class TicketMarkdownExportTest extends BaseTicketTest
         $this->assertStringContainsString('![screenshot-2]', $body);
         // Signed URL obsahuje signature param
         $this->assertStringContainsString('signature=', $body);
+    }
+
+    public function test_markdown_neobsahuje_sekci_komentare_kdyz_zadne_nejsou(): void
+    {
+        $ticket = Ticket::factory()->create([
+            'tenant_id' => $this->tenantId,
+            'user_id' => $this->user->id,
+        ]);
+
+        $this->actingAs($this->user);
+
+        $response = $this->get("/api/tickets/{$ticket->uuid}/export.md");
+
+        $response->assertStatus(200);
+        $this->assertStringNotContainsString('## Komentáře', $response->getContent());
+    }
+
+    public function test_markdown_obsahuje_komentare_s_autorem_datem_a_blockquote_telem(): void
+    {
+        $ticket = Ticket::factory()->create([
+            'tenant_id' => $this->tenantId,
+            'user_id' => $this->user->id,
+        ]);
+
+        TicketComment::factory()->create([
+            'ticket_id' => $ticket->id,
+            'user_id' => $this->user->id,
+            'body' => 'První odpověď na ticket.',
+            'created_at' => now()->subHour(),
+        ]);
+
+        // Tělo obsahuje nadpis — musí zůstat jako součást blockquote, ne
+        // aby rozbilo strukturu exportu (viz TASK-472).
+        TicketComment::factory()->create([
+            'ticket_id' => $ticket->id,
+            'user_id' => $this->user->id,
+            'body' => "## Popis\nUpřesnění s vlastním nadpisem uvnitř.",
+            'created_at' => now(),
+        ]);
+
+        $this->actingAs($this->user);
+
+        $response = $this->get("/api/tickets/{$ticket->uuid}/export.md");
+
+        $response->assertStatus(200);
+        $body = $response->getContent();
+
+        $this->assertStringContainsString('## Komentáře', $body);
+        $this->assertStringContainsString($this->user->name, $body);
+        $this->assertStringContainsString('> První odpověď na ticket.', $body);
+        $this->assertStringContainsString('> ## Popis', $body);
+        $this->assertStringContainsString('> Upřesnění s vlastním nadpisem uvnitř.', $body);
+
+        // Chronologické pořadí (comments() je orderBy created_at) — první
+        // komentář se v textu objeví dřív než druhý.
+        $this->assertLessThan(
+            strpos($body, '> ## Popis'),
+            strpos($body, '> První odpověď na ticket.'),
+        );
     }
 
     public function test_anti_idor_export_ciziho_tenanta_403(): void

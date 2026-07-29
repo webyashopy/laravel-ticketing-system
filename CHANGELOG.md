@@ -17,6 +17,14 @@ verzování dle [SemVer](https://semver.org/lang/cs/).
   začínající příkazem `/plan`. Nyní vrací `/validate` — vstupní krok bugfix
   workflow (analýza bugu a jeho příčiny). Upravena i závěrečná instrukce
   promptu, aby odpovídala validate workflow.
+- `TicketMarkdownExporter::export()` zahazoval veškeré komentáře pod
+  ticketem — diskuse s upřesněním/rozhodnutím se ztratila jak v exportu
+  pro tlačítko „Kopírovat jako Claude prompt", tak v git exportu pro skill
+  `buguj` (obě cesty sdílejí tento exportér). Přidána sekce „## Komentáře"
+  (autor, datum, tělo jako blockquote proti rozbití struktury nadpisem
+  v textu komentáře), vynechává se u ticketu bez komentářů. Eager-load
+  `comments.author` doplněn i do `tickets:sync-export`, aby hromadný export
+  nezpůsobil N+1 dotaz na ticket.
 
 ### Přidáno
 - Skeleton balíčku — Spatie Package Tools, Composer + npm manifesty,
