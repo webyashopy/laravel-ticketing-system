@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Webyashopy\Tickets\Contracts\TicketTenantResolver;
 use Webyashopy\Tickets\Models\Ticket;
+use Webyashopy\Tickets\Services\TicketCreatedFlash;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,8 +27,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Host aplikace si middleware zařadí do `web` skupiny (nebo do skupiny
  * rout balíčku přes `config('tickets.routes.middleware')`).
  *
- * Vedle badge sdílí i prop `ticketsFlash` — flash data balíčku, na kterých
- * stojí toast po vytvoření ticketu (viz `TicketController::store()`).
+ * Vedle badge sdílí i prop `ticketsFlash` — payload pro toast po vytvoření
+ * ticketu (viz `TicketController::store()` + {@see TicketCreatedFlash}).
  * Nespoléháme na `flash` prop host aplikace, protože ten balíček nemá
  * jak garantovat.
  */
@@ -54,12 +55,20 @@ class ShareTicketsBadge
             return (int) $query->open()->count();
         });
 
-        // Flash data balíčku — na rozdíl od badge NE lazy: flash session klíč
-        // přežije jen jeden request, takže se musí vyhodnotit hned.
-        // `hasSession()` — middleware může viset i na stateless skupině.
+        // Payload pro toast po vytvoření ticketu. Vyzvedáváme ho atomicky
+        // (`pull` = přečti + smaž) a VÝHRADNĚ pro skutečný Inertia GET —
+        // tedy pro ten jediný request, který má toast čím vyrenderovat.
+        //
+        // Bez toho guardu by payload spolykal kterýkoli paralelní request,
+        // co zrovna proletí (React Query refetch, polling), a uživatel by po
+        // založení ticketu nedostal žádnou odezvu. Přesně tomu se vyhýbáme
+        // tím, že payload vůbec nedržíme v session flash — viz
+        // {@see TicketCreatedFlash}.
+        $isInertiaGet = $request->isMethod('GET') && $request->hasHeader('X-Inertia');
+
         Inertia::share('ticketsFlash', [
-            'created' => $request->hasSession()
-                ? $request->session()->get('tickets_created')
+            'created' => ($user !== null && $isInertiaGet)
+                ? app(TicketCreatedFlash::class)->pull($user->id)
                 : null,
         ]);
 

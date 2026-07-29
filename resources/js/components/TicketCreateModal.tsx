@@ -66,8 +66,13 @@ interface TicketsCreatedFlash {
 /**
  * Toast po úspěšném vytvoření — s odkazem na nový ticket, pokud host
  * aplikace má zapojený `ShareTicketsBadge` middleware. Bez něj (nebo když
- * flash z jakéhokoli důvodu chybí) degraduje na prostou hlášku, takže
+ * payload z jakéhokoli důvodu chybí) degraduje na prostou hlášku, takže
  * vytvoření ticketu nikdy nevypadá jako by selhalo.
+ *
+ * Odkaz je `<a target="_blank">`, ne SPA navigace: celý smysl téhle změny je,
+ * že uživatel po nahlášení chyby zůstane tam, kde byl. Klik na odkaz je navíc
+ * synchronní user-gesture, takže ho neblokuje pop-up blocker (na rozdíl od
+ * `window.open()` volaného z callbacku).
  */
 function showCreatedToast(page: { props?: Record<string, unknown> }): void {
     const flash = page?.props?.ticketsFlash as
@@ -81,11 +86,17 @@ function showCreatedToast(page: { props?: Record<string, unknown> }): void {
     }
 
     toast.success(`Ticket #${created.id} byl vytvořen`, {
-        description: created.title,
-        action: {
-            label: 'Zobrazit',
-            onClick: () => router.visit(created.url),
-        },
+        duration: 10000,
+        description: (
+            <a
+                href={created.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link link-primary font-medium"
+            >
+                {`Otevřít „${created.title || 'bez názvu'}" v nové záložce`}
+            </a>
+        ),
     });
 }
 

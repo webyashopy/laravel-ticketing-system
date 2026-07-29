@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Webyashopy\Tickets\Models\Ticket;
 use Webyashopy\Tickets\Models\TicketAttachment;
+use Webyashopy\Tickets\Services\TicketCreatedFlash;
 
 /**
  * Happy path: vytvoření ticketu s 2 přílohami.
@@ -112,14 +113,15 @@ class TicketCreateTest extends BaseTicketTest
     }
 
     /**
-     * Flash payload pro toast — frontend z něj skládá hlášku s odkazem
-     * „Zobrazit" (viz `TicketCreateModal::showCreatedToast`).
+     * Payload pro toast — frontend z něj skládá hlášku s odkazem na nový
+     * ticket (viz `TicketCreateModal::showCreatedToast`). Leží v per-user
+     * cache, NE v session flash — důvod viz docblock `TicketCreatedFlash`.
      */
-    public function test_vytvoreni_ticketu_flashne_data_pro_toast(): void
+    public function test_vytvoreni_ticketu_ulozi_payload_pro_toast_do_cache(): void
     {
         $this->actingAs($this->user);
 
-        $response = $this->from('/persons/123')->post('/tickets', [
+        $this->from('/persons/123')->post('/tickets', [
             'title' => 'Modal se nezavírá',
             'description' => 'Po kliknutí na ESC zůstává modal otevřený.',
             'category' => 'bug',
@@ -128,14 +130,32 @@ class TicketCreateTest extends BaseTicketTest
 
         $ticket = Ticket::first();
 
-        $response->assertSessionHas('tickets_created');
+        $created = app(TicketCreatedFlash::class)->pull($this->user->id);
 
-        $created = session('tickets_created');
+        $this->assertNotNull($created, 'Payload pro toast v cache chybí.');
         $this->assertSame($ticket->id, $created['id']);
         $this->assertSame($ticket->uuid, $created['uuid']);
         $this->assertSame('Modal se nezavírá', $created['title']);
         // Odkaz míří na detail ticketu — toast na něj pustí až na kliknutí
         $this->assertStringContainsString($ticket->uuid, $created['url']);
+    }
+
+    /**
+     * Payload NESMÍ skončit v session flash — právě to je ten vzor, který
+     * u paralelních requestů (React Query + Inertia GET) ztrácel data.
+     */
+    public function test_payload_pro_toast_nejde_do_session_flash(): void
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->from('/persons/123')->post('/tickets', [
+            'title' => 'Drobný překlep',
+            'description' => 'Na úvodní stránce je překlep.',
+            'category' => 'other',
+            'priority' => 'low',
+        ]);
+
+        $response->assertSessionMissing('tickets_created');
     }
 
     /**

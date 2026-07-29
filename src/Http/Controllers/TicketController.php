@@ -20,6 +20,7 @@ use Webyashopy\Tickets\Http\Requests\UpdateTicketRequest;
 use Webyashopy\Tickets\Models\Ticket;
 use Webyashopy\Tickets\Services\TicketAttachmentStorage;
 use Webyashopy\Tickets\Services\TicketAuditService;
+use Webyashopy\Tickets\Services\TicketCreatedFlash;
 
 /**
  * Web (Inertia) controller pro tickety.
@@ -242,11 +243,11 @@ class TicketController extends Controller
      * Návrat: `back()` (NE redirect na detail). Ticket se typicky hlásí přes
      * FAB z libovolné stránky host aplikace a přesměrování na detail by
      * uživatele vytrhlo z rozdělané práce. Místo toho zůstává na místě a
-     * dostane toast s odkazem na nový ticket — data pro něj jdou flash session
-     * klíčem `tickets_created`, který sdílí middleware `ShareTicketsBadge`
-     * jako Inertia prop `ticketsFlash.created`. Klíč je záměrně plochý (ne
-     * `tickets.created`): tečku by `Session::put()` rozbalilo na nested pole
-     * pod klíčem `tickets` a mohlo přepsat session data host aplikace.
+     * dostane toast s odkazem na nový ticket — data pro něj neukládáme do
+     * session flash, ale do krátkodobé per-user cache přes
+     * {@see TicketCreatedFlash} (důvod: race condition s paralelními
+     * requesty, viz docblock té třídy). Do Inertia props je propíše
+     * middleware `ShareTicketsBadge` jako `ticketsFlash.created`.
      */
     public function store(StoreTicketRequest $request): RedirectResponse
     {
@@ -281,17 +282,18 @@ class TicketController extends Controller
             return $ticket;
         });
 
+        app(TicketCreatedFlash::class)->put($user->id, [
+            'id' => $ticket->id,
+            'uuid' => $ticket->uuid,
+            'title' => $ticket->title,
+            'url' => route('tickets.show', ['ticket' => $ticket->uuid]),
+        ]);
+
         // Fallback na index řešíme pro případ requestu bez Referer hlavičky
         // (přímé volání endpointu, testy) — `back()` by jinak skončilo na '/'.
         return redirect()
             ->back(fallback: route('tickets.index'))
-            ->with('success', sprintf('Ticket #%d byl vytvořen.', $ticket->id))
-            ->with('tickets_created', [
-                'id' => $ticket->id,
-                'uuid' => $ticket->uuid,
-                'title' => $ticket->title,
-                'url' => route('tickets.show', ['ticket' => $ticket->uuid]),
-            ]);
+            ->with('success', sprintf('Ticket #%d byl vytvořen.', $ticket->id));
     }
 
     /**

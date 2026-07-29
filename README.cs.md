@@ -144,7 +144,15 @@ Sdílí dva Inertia propy:
 - `ticketsFlash.created` — data nově vytvořeného tiketu pro toast
 
 Bez middleware balíček funguje dál, jen toast po vytvoření tiketu nebude mít
-tlačítko „Zobrazit" a badge zůstane bez počtu.
+odkaz na nový tiket a badge zůstane bez počtu.
+
+Payload pro toast jde přes krátkodobou per-user **cache**, ne přes session
+flash — middleware ho vyzvedne atomickým `pull()` a jen pro skutečný Inertia
+GET. Session flash tuhle úlohu nezvládá: po `back()` letí souběžně s Inertia
+GET i další requesty (React Query, polling) a u `database` session driveru
+není mezi requesty zamykání, takže flash spolyká kterýkoli z nich a toast
+nemá co vykreslit. Aplikace tedy potřebuje funkční cache driver; TTL řídí
+`tickets.created_flash_ttl_seconds` (default 30 s).
 
 ## Architektura
 

@@ -143,8 +143,17 @@ Shares two Inertia props:
   evaluated on partial reloads that request it)
 - `ticketsFlash.created` — data of the newly created ticket for the toast
 
-The package works without the middleware; the toast just loses its "Zobrazit"
-button and the badge has no count.
+The package works without the middleware; the toast just loses its link to the
+new ticket and the badge has no count.
+
+The toast payload travels through a short-lived per-user **cache**, not the
+session flash — the middleware picks it up with an atomic `pull()`, and only
+for a genuine Inertia GET. Session flash cannot do this reliably: after
+`back()`, other requests (React Query refetches, polling) race the Inertia GET,
+and the `database` session driver has no inter-request locking, so whichever
+request arrives first eats the flash and the toast renders nothing. The app
+therefore needs a working cache driver; TTL is set by
+`tickets.created_flash_ttl_seconds` (default 30 s).
 
 ## Architecture
 

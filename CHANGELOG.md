@@ -13,9 +13,19 @@ verzování dle [SemVer](https://semver.org/lang/cs/).
   práce. `TicketController::store()` nyní vrací `back()` (fallback na seznam
   tiketů, když chybí Referer) a uživatel dostane toast „Ticket #ID byl
   vytvořen" s tlačítkem „Zobrazit", které na detail pustí až na vyžádání.
-  Data pro toast jdou flash klíčem `tickets_created` → Inertia prop
-  `ticketsFlash.created` (sdílí `ShareTicketsBadge`). Bez zapojeného
+  Data pro toast jdou přes per-user cache (`TicketCreatedFlash`) → Inertia
+  prop `ticketsFlash.created` (sdílí `ShareTicketsBadge`). Bez zapojeného
   middleware toast degraduje na prostou hlášku bez odkazu.
+- Payload pro toast se NEUKLÁDÁ do session flash, ale do krátkodobé per-user
+  cache, odkud ho middleware vyzvedne atomickým `pull()` a výhradně pro
+  skutečný Inertia GET. Session flash tuhle úlohu spolehlivě nezvládá: po
+  `back()` letí souběžně s Inertia GET i další requesty aplikace (React Query
+  refetche, polling) a session driver `database` nemá mezi requesty zamykání,
+  takže flash spolyká kterýkoli z nich a toast nemá co vykreslit. Chyba je
+  navíc náhodná podle časování. Vzor převzat z T4A (TASK-1258a-fix-2), kde na
+  to narazili v ostrém provozu a řešili si to vlastním overridem controlleru —
+  ten je teď zbytečný. TTL řídí `tickets.created_flash_ttl_seconds`
+  (default 30 s).
 - npm skript `prepare` (`npm run build`) — balíček lze instalovat přímo
   z gitu jako dependency; `dist/` se sestaví automaticky při `npm install`
   (zůstává mimo verzování).

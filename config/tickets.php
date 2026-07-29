@@ -82,6 +82,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Toast po vytvoření ticketu
+    |--------------------------------------------------------------------------
+    |
+    | Jak dlouho (v sekundách) čeká v cache payload pro toast „Ticket #… byl
+    | vytvořen" (viz `TicketCreatedFlash`). Musí přežít jen redirect zpět na
+    | stránku, ze které uživatel ticket nahlásil — proto krátká hodnota.
+    | Zvyš jen tehdy, pokud host aplikace dělá mezi POST a návratem něco
+    | zdlouhavého (např. těžký sync middleware).
+    |
+    */
+    'created_flash_ttl_seconds' => (int) env('TICKETS_CREATED_FLASH_TTL', 30),
+
+    /*
+    |--------------------------------------------------------------------------
     | Sync export (markdown → git repo)
     |--------------------------------------------------------------------------
     |

@@ -3,7 +3,7 @@ var nt = (e, s, r) => s in e ? at(e, s, { enumerable: !0, configurable: !0, writ
 var fe = (e, s, r) => nt(e, typeof s != "symbol" ? s + "" : s, r);
 import { jsxs as n, jsx as t, Fragment as J } from "react/jsx-runtime";
 import { forwardRef as se, useId as he, useState as f, useRef as Y, useCallback as ae, useEffect as G } from "react";
-import { router as D, Head as ze, usePage as st, Link as rt } from "@inertiajs/react";
+import { router as $, Head as ze, usePage as st, Link as rt } from "@inertiajs/react";
 import { Upload as Ee, File as xe, X as W, Check as ve, Camera as lt, Search as it, Plus as ot, Image as De, FileText as me, FileArchive as ct, FileSpreadsheet as dt, History as mt, MessageSquare as ut, Trash2 as ye, Send as pt, Pencil as Ae, Download as ht, Clipboard as bt, ExternalLink as ft, Lock as gt, Unlock as xt, ChevronLeft as Nt, Bug as vt } from "lucide-react";
 import { toast as v } from "sonner";
 import { formatDistanceToNow as $e } from "date-fns";
@@ -479,9 +479,9 @@ function jt({
   initialFiles: N,
   acceptedTypesLabel: y
 }) {
-  const [T, L] = f(() => N ?? []), [O, S] = f(!1), [u, b] = f([]), [z, I] = f(""), [C, Q] = f(""), [Z, A] = f(!0), U = Y(null), F = Y([]);
+  const [T, L] = f(() => N ?? []), [O, S] = f(!1), [u, b] = f([]), [z, I] = f(""), [C, Q] = f(""), [Z, D] = f(!0), U = Y(null), F = Y([]);
   F.current = u;
-  const B = Math.round(h / (1024 * 1024)), X = u.length >= 2, oe = d && !X, m = (i) => c.includes(i.type) ? i.size > h ? `Soubor je příliš velký (max ${B} MB)` : null : "Nepovolený typ souboru", $ = async (i) => {
+  const B = Math.round(h / (1024 * 1024)), X = u.length >= 2, oe = d && !X, m = (i) => c.includes(i.type) ? i.size > h ? `Soubor je příliš velký (max ${B} MB)` : null : "Nepovolený typ souboru", A = async (i) => {
     const g = F.current[i];
     if (!g) return;
     const w = new FormData();
@@ -514,7 +514,7 @@ function jt({
     );
   }, H = () => {
     F.current.map((g, w) => ({ item: g, idx: w })).filter(({ item: g }) => g.status === "pending").forEach(({ idx: g }) => {
-      $(g);
+      A(g);
     });
   }, M = ae(
     (i) => {
@@ -544,7 +544,7 @@ function jt({
             title: j && we === 0 ? z : "",
             description: j && we === 0 ? C : ""
           })), et = [..._, ...be];
-          return j && setTimeout(() => $(k), 100), et;
+          return j && setTimeout(() => A(k), 100), et;
         });
       }
     },
@@ -605,7 +605,7 @@ function jt({
           type: "checkbox",
           className: "checkbox checkbox-sm checkbox-primary",
           checked: Z,
-          onChange: (i) => A(i.target.checked)
+          onChange: (i) => D(i.target.checked)
         }
       ),
       /* @__PURE__ */ t("span", { className: "text-sm font-medium", children: "Spustit OCR rozpoznání textu" })
@@ -803,7 +803,7 @@ function Lt({ onCapture: e, onCancel: s, maxSize: r }) {
     }
     o(!0);
     try {
-      const { default: b } = await import("html2canvas-pro"), z = window.devicePixelRatio || 1, I = a.current, C = l.current, Q = (A) => !!(I && (A === I || I.contains(A)) || C && (A === C || C.contains(A)));
+      const { default: b } = await import("html2canvas-pro"), z = window.devicePixelRatio || 1, I = a.current, C = l.current, Q = (D) => !!(I && (D === I || I.contains(D)) || C && (D === C || C.contains(D)));
       (await b(document.body, {
         x: window.scrollX + u.x,
         y: window.scrollY + u.y,
@@ -813,18 +813,18 @@ function Lt({ onCapture: e, onCancel: s, maxSize: r }) {
         useCORS: !0,
         logging: !1,
         ignoreElements: Q
-      })).toBlob((A) => {
-        if (!A) {
+      })).toBlob((D) => {
+        if (!D) {
           y("Nepodařilo se vytvořit obrázek");
           return;
         }
-        if (r && A.size > r) {
+        if (r && D.size > r) {
           const B = Math.round(r / 1024 / 1024);
           y(`Screenshot je příliš velký (max ${B} MB).`);
           return;
         }
         const F = `screenshot-${(/* @__PURE__ */ new Date()).toISOString().replace(/[:.]/g, "-")}.png`;
-        e(new File([A], F, { type: "image/png" }));
+        e(new File([D], F, { type: "image/png" }));
       }, "image/png");
     } catch (b) {
       const z = b instanceof Error ? b.message : "Neznámá chyba";
@@ -917,11 +917,17 @@ function Pt(e) {
     return;
   }
   v.success(`Ticket #${r.id} byl vytvořen`, {
-    description: r.title,
-    action: {
-      label: "Zobrazit",
-      onClick: () => D.visit(r.url)
-    }
+    duration: 1e4,
+    description: /* @__PURE__ */ t(
+      "a",
+      {
+        href: r.url,
+        target: "_blank",
+        rel: "noopener noreferrer",
+        className: "link link-primary font-medium",
+        children: `Otevřít „${r.title || "bez názvu"}" v nové záložce`
+      }
+    )
   });
 }
 const _e = {
@@ -936,7 +942,7 @@ function Ne({ open: e, onClose: s, onCreated: r }) {
     e && (l({ ..._e }), h([]), o({}), y(!1), L((u) => u + 1));
   }, [e]), !e) return null;
   const O = (u) => {
-    u.preventDefault(), x(!0), o({}), D.post(
+    u.preventDefault(), x(!0), o({}), $.post(
       "/tickets",
       {
         title: a.title,
@@ -1224,7 +1230,7 @@ const Mt = (e) => Me(e);
 function Kt({ ticket: e }) {
   var r, a;
   return /* @__PURE__ */ n("tr", { className: "hover:bg-base-200 cursor-pointer", onClick: () => {
-    D.visit(`/tickets/${e.uuid}`);
+    $.visit(`/tickets/${e.uuid}`);
   }, children: [
     /* @__PURE__ */ t("td", { children: /* @__PURE__ */ t("span", { className: `badge ${Ke[e.status]} badge-sm`, children: pe[e.status] }) }),
     /* @__PURE__ */ t("td", { children: /* @__PURE__ */ t("span", { className: `badge ${Be[e.category]} badge-sm`, children: K[e.category] }) }),
@@ -1252,7 +1258,7 @@ function Rt({ tickets: e }) {
 function xa({ tickets: e, filters: s, can: r }) {
   const [a, l] = f(s), [c, h] = f(!1), p = Y(null), x = ae((d) => {
     const o = new URLSearchParams();
-    d.search && o.append("search", d.search), d.status && o.append("status", d.status), d.category && o.append("category", d.category), d.priority && o.append("priority", d.priority), d.all_orgs && o.append("all_orgs", "1"), D.get(`/tickets?${o.toString()}`, {}, {
+    d.search && o.append("search", d.search), d.status && o.append("status", d.status), d.category && o.append("category", d.category), d.priority && o.append("priority", d.priority), d.all_orgs && o.append("all_orgs", "1"), $.get(`/tickets?${o.toString()}`, {}, {
       preserveState: !0,
       preserveScroll: !0,
       replace: !0
@@ -1299,7 +1305,7 @@ function xa({ tickets: e, filters: s, can: r }) {
           {
             type: "button",
             className: `join-item btn btn-sm ${d === e.current_page ? "btn-active" : ""}`,
-            onClick: () => D.get(`/tickets?${o.toString()}`, {}, {
+            onClick: () => $.get(`/tickets?${o.toString()}`, {}, {
               preserveState: !0,
               preserveScroll: !0
             }),
@@ -1314,7 +1320,7 @@ function xa({ tickets: e, filters: s, can: r }) {
       {
         open: c,
         onClose: () => h(!1),
-        onCreated: () => D.reload({ only: ["tickets", "ticketsOpenCount"] })
+        onCreated: () => $.reload({ only: ["tickets", "ticketsOpenCount"] })
       }
     )
   ] });
@@ -1393,7 +1399,7 @@ const de = 5e3;
 function Yt({ ticketUuid: e }) {
   const [s, r] = f(""), [a, l] = f(!1), c = () => {
     const o = s.trim();
-    !o || o.length > de || a || (l(!0), D.post(
+    !o || o.length > de || a || (l(!0), $.post(
       `/tickets/${e}/comments`,
       { body: o },
       {
@@ -1467,7 +1473,7 @@ function Wt(e) {
 function qt({ comment: e, isOwn: s }) {
   var o, N;
   const [r, a] = f(!1), [l, c] = f(e.body), [h, p] = f(!1), x = () => {
-    !l.trim() || h || (p(!0), D.patch(
+    !l.trim() || h || (p(!0), $.patch(
       `/comments/${e.uuid}`,
       { body: l.trim() },
       {
@@ -1483,7 +1489,7 @@ function qt({ comment: e, isOwn: s }) {
       }
     ));
   }, d = () => {
-    confirm("Opravdu smazat komentář? Akce je nevratná.") && (p(!0), D.delete(`/comments/${e.uuid}`, {
+    confirm("Opravdu smazat komentář? Akce je nevratná.") && (p(!0), $.delete(`/comments/${e.uuid}`, {
       preserveScroll: !0,
       onSuccess: () => v.success("Komentář smazán"),
       onError: () => v.error("Smazání selhalo"),
@@ -1666,27 +1672,27 @@ function aa(e) {
   return e < 1024 ? `${e} B` : e < 1024 * 1024 ? `${(e / 1024).toFixed(1)} KB` : `${(e / 1024 / 1024).toFixed(2)} MB`;
 }
 function na({ ticket: e }) {
-  var A, U, F, B, X, oe;
-  const [s, r] = f(null), [a, l] = f(!1), c = ((A = e.can) == null ? void 0 : A.update) ?? !1, [h, p] = f(!1), [x, d] = f(e.title), [o, N] = f(e.description), [y, T] = f(e.category), [L, O] = f(e.priority), S = Y(null);
+  var D, U, F, B, X, oe;
+  const [s, r] = f(null), [a, l] = f(!1), c = ((D = e.can) == null ? void 0 : D.update) ?? !1, [h, p] = f(!1), [x, d] = f(e.title), [o, N] = f(e.description), [y, T] = f(e.category), [L, O] = f(e.priority), S = Y(null);
   G(() => {
     let m;
-    const $ = () => {
-      D.reload({
+    const A = () => {
+      $.reload({
         only: ["ticket"]
       });
     }, P = () => {
-      m === void 0 && (m = window.setInterval($, ta));
+      m === void 0 && (m = window.setInterval(A, ta));
     }, H = () => {
       m !== void 0 && (window.clearInterval(m), m = void 0);
     }, M = () => {
-      document.hidden ? H() : ($(), P());
+      document.hidden ? H() : (A(), P());
     };
     return document.hidden || P(), document.addEventListener("visibilitychange", M), () => {
       H(), document.removeEventListener("visibilitychange", M);
     };
   }, []);
   const u = () => {
-    l(!0), D.patch(
+    l(!0), $.patch(
       `/tickets/${e.uuid}`,
       {
         title: x,
@@ -1707,10 +1713,10 @@ function na({ ticket: e }) {
     d(e.title), N(e.description), T(e.category), O(e.priority), p(!1);
   }, z = (m) => {
     var P;
-    const $ = (P = m.target.files) == null ? void 0 : P[0];
-    $ && (l(!0), D.post(
+    const A = (P = m.target.files) == null ? void 0 : P[0];
+    A && (l(!0), $.post(
       `/tickets/${e.uuid}/attachments`,
-      { file: $ },
+      { file: A },
       {
         forceFormData: !0,
         preserveScroll: !0,
@@ -1725,7 +1731,7 @@ function na({ ticket: e }) {
       }
     ));
   }, I = (m) => {
-    confirm(`Smazat přílohu „${m.filename}"?`) && (l(!0), D.delete(`/tickets/${e.uuid}/attachments/${m.uuid}`, {
+    confirm(`Smazat přílohu „${m.filename}"?`) && (l(!0), $.delete(`/tickets/${e.uuid}/attachments/${m.uuid}`, {
       preserveScroll: !0,
       onSuccess: () => v.success("Příloha smazána"),
       onError: () => v.error("Smazání selhalo"),
@@ -1733,7 +1739,7 @@ function na({ ticket: e }) {
     }));
   }, C = () => {
     const m = e.status === "open" ? "close" : "reopen";
-    l(!0), D.post(
+    l(!0), $.post(
       `/tickets/${e.uuid}/${m}`,
       {},
       {
@@ -1764,8 +1770,8 @@ ${await m.text()}
 Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
       await navigator.clipboard.writeText(P), v.success("Zkopírováno do schránky");
     } catch (m) {
-      const $ = m instanceof Error ? m.message : "Neznámá chyba";
-      v.error(`Nepodařilo se zkopírovat: ${$}`);
+      const A = m instanceof Error ? m.message : "Neznámá chyba";
+      v.error(`Nepodařilo se zkopírovat: ${A}`);
     }
   }, Z = () => {
     window.open(`/api/tickets/${e.uuid}/export.md`, "_blank");
@@ -2002,7 +2008,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
         ] })
       ] }),
       e.attachments && e.attachments.length > 0 ? /* @__PURE__ */ t("div", { className: "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2", children: e.attachments.map((m) => {
-        const $ = Ze(m.mime_type);
+        const A = Ze(m.mime_type);
         return /* @__PURE__ */ n(
           "div",
           {
@@ -2024,7 +2030,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
                         className: "w-full h-32 object-cover",
                         loading: "lazy"
                       }
-                    ) : /* @__PURE__ */ t("div", { className: "w-full h-32 flex items-center justify-center bg-base-200", children: /* @__PURE__ */ t($, { size: 48, className: "text-base-content/60" }) }),
+                    ) : /* @__PURE__ */ t("div", { className: "w-full h-32 flex items-center justify-center bg-base-200", children: /* @__PURE__ */ t(A, { size: 48, className: "text-base-content/60" }) }),
                     /* @__PURE__ */ n("div", { className: "px-2 py-1.5 bg-base-100 border-t border-base-300", children: [
                       /* @__PURE__ */ t("div", { className: "text-xs font-medium truncate", children: m.filename }),
                       /* @__PURE__ */ t("div", { className: "text-xs text-base-content/60", children: aa(m.size_bytes) })
