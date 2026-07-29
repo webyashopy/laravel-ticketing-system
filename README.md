@@ -119,6 +119,33 @@ import { TicketsFab } from '@webyashopy/ticketing-system-ui';
 <TicketsFab />
 ```
 
+The FAB renders at `z-index: 1100` — above DaisyUI modals (999), so a ticket
+can be filed even from a screen with an open modal. If your app has overlays
+above 1100, override the values in `resources/js/lib/z-layers.ts`.
+
+After submitting the form the user **stays on the current page** — they only
+get a toast linking to the new ticket.
+
+### 7) `ShareTicketsBadge` middleware (recommended)
+
+```php
+// bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->web(append: [
+        \Webyashopy\Tickets\Http\Middleware\ShareTicketsBadge::class,
+    ]);
+})
+```
+
+Shares two Inertia props:
+
+- `ticketsOpenCount` — open ticket count for the header badge (lazy, only
+  evaluated on partial reloads that request it)
+- `ticketsFlash.created` — data of the newly created ticket for the toast
+
+The package works without the middleware; the toast just loses its "Zobrazit"
+button and the badge has no count.
+
 ## Architecture
 
 - **Skeleton:** Spatie Package Tools

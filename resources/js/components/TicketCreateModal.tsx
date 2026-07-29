@@ -23,6 +23,8 @@ import {
     TICKET_PRIORITY_LABELS,
 } from '../types';
 
+import { Z_LAYERS } from '../lib/z-layers';
+
 import { DocumentDropZone } from './DocumentDropZone';
 import { ScreenshotPicker } from './ScreenshotPicker';
 
@@ -49,6 +51,43 @@ const ALLOWED_ATTACHMENT_MIMES = [
     'application/zip',
     'application/x-zip-compressed',
 ];
+
+/**
+ * Flash prop balíčku sdílený middlewarem `ShareTicketsBadge`.
+ * Zdroj dat pro toast po vytvoření ticketu.
+ */
+interface TicketsCreatedFlash {
+    id: number;
+    uuid: string;
+    title: string;
+    url: string;
+}
+
+/**
+ * Toast po úspěšném vytvoření — s odkazem na nový ticket, pokud host
+ * aplikace má zapojený `ShareTicketsBadge` middleware. Bez něj (nebo když
+ * flash z jakéhokoli důvodu chybí) degraduje na prostou hlášku, takže
+ * vytvoření ticketu nikdy nevypadá jako by selhalo.
+ */
+function showCreatedToast(page: { props?: Record<string, unknown> }): void {
+    const flash = page?.props?.ticketsFlash as
+        | { created?: TicketsCreatedFlash | null }
+        | undefined;
+    const created = flash?.created;
+
+    if (!created?.url) {
+        toast.success('Ticket byl úspěšně vytvořen');
+        return;
+    }
+
+    toast.success(`Ticket #${created.id} byl vytvořen`, {
+        description: created.title,
+        action: {
+            label: 'Zobrazit',
+            onClick: () => router.visit(created.url),
+        },
+    });
+}
 
 const initialFormData: Omit<TicketCreateFormData, 'page_url' | 'viewport' | 'user_agent' | 'attachments'> = {
     title: '',
@@ -85,7 +124,8 @@ export function TicketCreateModal({ open, onClose, onCreated }: TicketCreateModa
         setIsSubmitting(true);
         setErrors({});
 
-        // Inertia router — backend vrací redirect na tickets.show, Inertia ho zpracuje sama.
+        // Inertia router — backend vrací `back()`, uživatel tedy zůstává na
+        // stránce, odkud bug hlásil (žádné přesměrování na detail ticketu).
         // forceFormData zajistí multipart/form-data kvůli přílohám (File[]).
         router.post(
             '/tickets',
@@ -102,8 +142,8 @@ export function TicketCreateModal({ open, onClose, onCreated }: TicketCreateModa
             },
             {
                 forceFormData: true,
-                onSuccess: () => {
-                    toast.success('Ticket byl úspěšně vytvořen');
+                onSuccess: (page) => {
+                    showCreatedToast(page);
                     onCreated?.();
                     onClose();
                 },
@@ -136,10 +176,14 @@ export function TicketCreateModal({ open, onClose, onCreated }: TicketCreateModa
 
     return (
         <>
-            {/* Modal — schovaný přes display:none když je aktivní picker (form state zachován) */}
+            {/* Modal — schovaný přes display:none když je aktivní picker (form state zachován).
+                zIndex nad FAB i nad modaly host aplikace (viz Z_LAYERS). */}
             <div
                 className="modal modal-open"
-                style={pickerActive ? { display: 'none' } : undefined}
+                style={{
+                    zIndex: Z_LAYERS.modal,
+                    ...(pickerActive ? { display: 'none' } : {}),
+                }}
             >
                 <div className="modal-box max-w-2xl">
                     <h3 className="font-bold text-lg mb-4">Nový ticket</h3>

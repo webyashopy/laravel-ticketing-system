@@ -46,14 +46,23 @@ aplikace exportuje tickety příkazem `tickets:sync-export` (balíček
    Stáří odhadni z metadata `**Vytvořeno:**` v souboru.
 
 3. **Detail (`/buguj <id>`).** Najdi soubor
-   `~/.claude/cache/<APP>-tickets/{open,closed}/<id>-*.md` a vypiš celý obsah
-   pomocí Read tool. Pak nabídni uživateli:
+   `~/.claude/cache/<APP>-tickets/{open,closed}/<id>-*.md` a vypiš **celý
+   obsah** pomocí Read tool — bez `limit`/`offset`. Struktura souboru:
+   `## Popis` → `## Screenshoty` → `## Komentáře`. Komentáře jsou na konci,
+   takže zkrácené čtení je uřízne. Pak nabídni uživateli:
    - "Chceš tento bug opravit? Pokud ano, přepnu se do `<CESTA_K_PROJEKTU>` a
      spustím `/validate` — vstupní krok bugfix workflow (analýza bugu a jeho
      příčiny)."
    - Pokud ticket obsahuje screenshoty, signed URL je platný 24 h (dle
      `signed_url_ttl_hours`) od posledního exportu — pro zobrazení použij
      WebFetch (nebo na něj uživatele odkaž).
+
+   **Komentáře ber jako součást zadání, ne jako dodatek.** Sekce
+   `## Komentáře` obsahuje chronologicky `### <pořadí>. <autor> — <datum>`
+   a tělo jako blockquote (`> `). Bývá v nich upřesnění reprodukce, co už
+   kdo zkusil, nebo změna zadání oproti původnímu popisu — při konfliktu
+   s `## Popis` má přednost novější komentář. Ticket bez komentářů sekci
+   nemá vůbec.
 
 4. **Pokud git/SSH selže** (Permission denied, Connection refused) — ověř přístup
    k `<EXPORT_REPO_URL>` (SSH klíč, oprávnění). Nepokoušej se o opakovaný clone
@@ -66,6 +75,9 @@ aplikace exportuje tickety příkazem `tickets:sync-export` (balíček
 - Slug v názvu souboru nemusí přesně odpovídat aktuálnímu titulku ticketu (po
   změně titulku se soubor při příštím syncu přejmenuje).
 - Prázdný list = žádné otevřené tickety nebo poslední sync ještě neproběhl.
+- Komentáře přidané po posledním syncu v exportu ještě nejsou — když
+  uživatel tvrdí, že něco do ticketu dopsal a v souboru to není, udělej
+  nejdřív `git pull` znovu (lag = interval schedulovaného exportu).
 
 ## Placeholdery
 

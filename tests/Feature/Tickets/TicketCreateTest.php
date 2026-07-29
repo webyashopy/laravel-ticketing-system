@@ -13,7 +13,7 @@ use Webyashopy\Tickets\Models\TicketAttachment;
  * Happy path: vytvoření ticketu s 2 přílohami.
  *
  * Ověřuje:
- *   - POST /tickets vrátí redirect na detail
+ *   - POST /tickets vrátí redirect ZPĚT (ne na detail ticketu)
  *   - V DB existuje 1 ticket s tenant_id + user_id
  *   - V DB existují 2 attachments
  *   - Soubory jsou skutečně uložené ve storage/app/tickets/{ticket_uuid}/
@@ -40,7 +40,7 @@ class TicketCreateTest extends BaseTicketTest
             'attachments' => [$screenshot1, $screenshot2],
         ]);
 
-        // Redirect na detail nově vzniklého ticketu
+        // Redirect zpět, ne na detail ticketu
         $response->assertStatus(302);
         $response->assertSessionHas('success');
 
@@ -85,5 +85,74 @@ class TicketCreateTest extends BaseTicketTest
         $response->assertStatus(302);
         $this->assertSame(1, Ticket::count());
         $this->assertSame(0, TicketAttachment::count());
+    }
+
+    /**
+     * Ticket se hlásí přes FAB z libovolné stránky host aplikace — po odeslání
+     * musí uživatel zůstat tam, kde byl, ne skončit na detailu ticketu.
+     */
+    public function test_vytvoreni_ticketu_vrati_uzivatele_zpet_a_ne_na_detail(): void
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->from('/persons/123')->post('/tickets', [
+            'title' => 'Modal se nezavírá',
+            'description' => 'Po kliknutí na ESC zůstává modal otevřený.',
+            'category' => 'bug',
+            'priority' => 'high',
+        ]);
+
+        $ticket = Ticket::first();
+
+        $response->assertRedirect('/persons/123');
+        $this->assertStringNotContainsString(
+            $ticket->uuid,
+            (string) $response->headers->get('Location'),
+        );
+    }
+
+    /**
+     * Flash payload pro toast — frontend z něj skládá hlášku s odkazem
+     * „Zobrazit" (viz `TicketCreateModal::showCreatedToast`).
+     */
+    public function test_vytvoreni_ticketu_flashne_data_pro_toast(): void
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->from('/persons/123')->post('/tickets', [
+            'title' => 'Modal se nezavírá',
+            'description' => 'Po kliknutí na ESC zůstává modal otevřený.',
+            'category' => 'bug',
+            'priority' => 'high',
+        ]);
+
+        $ticket = Ticket::first();
+
+        $response->assertSessionHas('tickets_created');
+
+        $created = session('tickets_created');
+        $this->assertSame($ticket->id, $created['id']);
+        $this->assertSame($ticket->uuid, $created['uuid']);
+        $this->assertSame('Modal se nezavírá', $created['title']);
+        // Odkaz míří na detail ticketu — toast na něj pustí až na kliknutí
+        $this->assertStringContainsString($ticket->uuid, $created['url']);
+    }
+
+    /**
+     * Bez Referer hlavičky (přímé volání endpointu) nesmí `back()` skončit
+     * na kořenu host aplikace — fallback je seznam ticketů.
+     */
+    public function test_bez_referer_hlavicky_padne_redirect_na_seznam_ticketu(): void
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->post('/tickets', [
+            'title' => 'Drobný překlep',
+            'description' => 'Na úvodní stránce je překlep.',
+            'category' => 'other',
+            'priority' => 'low',
+        ]);
+
+        $response->assertRedirect(route('tickets.index'));
     }
 }

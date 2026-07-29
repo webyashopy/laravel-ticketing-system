@@ -25,6 +25,11 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * Host aplikace si middleware zařadí do `web` skupiny (nebo do skupiny
  * rout balíčku přes `config('tickets.routes.middleware')`).
+ *
+ * Vedle badge sdílí i prop `ticketsFlash` — flash data balíčku, na kterých
+ * stojí toast po vytvoření ticketu (viz `TicketController::store()`).
+ * Nespoléháme na `flash` prop host aplikace, protože ten balíček nemá
+ * jak garantovat.
  */
 class ShareTicketsBadge
 {
@@ -48,6 +53,15 @@ class ShareTicketsBadge
 
             return (int) $query->open()->count();
         });
+
+        // Flash data balíčku — na rozdíl od badge NE lazy: flash session klíč
+        // přežije jen jeden request, takže se musí vyhodnotit hned.
+        // `hasSession()` — middleware může viset i na stateless skupině.
+        Inertia::share('ticketsFlash', [
+            'created' => $request->hasSession()
+                ? $request->session()->get('tickets_created')
+                : null,
+        ]);
 
         return $next($request);
     }

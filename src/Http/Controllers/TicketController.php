@@ -238,6 +238,15 @@ class TicketController extends Controller
      *
      * `tenant_id` se odvozuje z bindovaného `TicketTenantResolver::tenantIdFor()`
      * — single-tenant projekt nechává NULL, multi-tenant zapíše ID organizace.
+     *
+     * Návrat: `back()` (NE redirect na detail). Ticket se typicky hlásí přes
+     * FAB z libovolné stránky host aplikace a přesměrování na detail by
+     * uživatele vytrhlo z rozdělané práce. Místo toho zůstává na místě a
+     * dostane toast s odkazem na nový ticket — data pro něj jdou flash session
+     * klíčem `tickets_created`, který sdílí middleware `ShareTicketsBadge`
+     * jako Inertia prop `ticketsFlash.created`. Klíč je záměrně plochý (ne
+     * `tickets.created`): tečku by `Session::put()` rozbalilo na nested pole
+     * pod klíčem `tickets` a mohlo přepsat session data host aplikace.
      */
     public function store(StoreTicketRequest $request): RedirectResponse
     {
@@ -272,9 +281,17 @@ class TicketController extends Controller
             return $ticket;
         });
 
+        // Fallback na index řešíme pro případ requestu bez Referer hlavičky
+        // (přímé volání endpointu, testy) — `back()` by jinak skončilo na '/'.
         return redirect()
-            ->route('tickets.show', ['ticket' => $ticket->uuid])
-            ->with('success', 'Ticket byl vytvořen.');
+            ->back(fallback: route('tickets.index'))
+            ->with('success', sprintf('Ticket #%d byl vytvořen.', $ticket->id))
+            ->with('tickets_created', [
+                'id' => $ticket->id,
+                'uuid' => $ticket->uuid,
+                'title' => $ticket->title,
+                'url' => route('tickets.show', ['ticket' => $ticket->uuid]),
+            ]);
     }
 
     /**

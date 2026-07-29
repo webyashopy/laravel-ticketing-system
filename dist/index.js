@@ -1,14 +1,14 @@
-var tt = Object.defineProperty;
-var at = (e, s, r) => s in e ? tt(e, s, { enumerable: !0, configurable: !0, writable: !0, value: r }) : e[s] = r;
-var be = (e, s, r) => at(e, typeof s != "symbol" ? s + "" : s, r);
+var at = Object.defineProperty;
+var nt = (e, s, r) => s in e ? at(e, s, { enumerable: !0, configurable: !0, writable: !0, value: r }) : e[s] = r;
+var fe = (e, s, r) => nt(e, typeof s != "symbol" ? s + "" : s, r);
 import { jsxs as n, jsx as t, Fragment as J } from "react/jsx-runtime";
-import { forwardRef as ne, useId as pe, useState as f, useRef as Y, useCallback as ae, useEffect as G } from "react";
-import { router as $, Head as Ce, usePage as nt, Link as st } from "@inertiajs/react";
-import { Upload as ze, File as ge, X as W, Check as Ne, Camera as rt, Search as lt, Plus as it, Image as Ee, FileText as de, FileArchive as ot, FileSpreadsheet as ct, History as dt, MessageSquare as mt, Trash2 as ve, Send as ut, Pencil as De, Download as pt, Clipboard as ht, ExternalLink as bt, Lock as ft, Unlock as gt, ChevronLeft as xt, Bug as Nt } from "lucide-react";
+import { forwardRef as se, useId as he, useState as f, useRef as Y, useCallback as ae, useEffect as G } from "react";
+import { router as D, Head as ze, usePage as st, Link as rt } from "@inertiajs/react";
+import { Upload as Ee, File as xe, X as W, Check as ve, Camera as lt, Search as it, Plus as ot, Image as De, FileText as me, FileArchive as ct, FileSpreadsheet as dt, History as mt, MessageSquare as ut, Trash2 as ye, Send as pt, Pencil as Ae, Download as ht, Clipboard as bt, ExternalLink as ft, Lock as gt, Unlock as xt, ChevronLeft as Nt, Bug as vt } from "lucide-react";
 import { toast as v } from "sonner";
-import { formatDistanceToNow as Ae } from "date-fns";
-import { cs as $e } from "date-fns/locale";
-function se(...e) {
+import { formatDistanceToNow as $e } from "date-fns";
+import { cs as Ie } from "date-fns/locale";
+function re(...e) {
   const s = [], r = (a) => {
     if (a) {
       if (Array.isArray(a)) {
@@ -20,7 +20,7 @@ function se(...e) {
   };
   return e.forEach(r), s.join(" ");
 }
-const vt = {
+const yt = {
   default: "btn-primary",
   secondary: "btn-secondary",
   destructive: "btn-error",
@@ -28,13 +28,13 @@ const vt = {
   ghost: "btn-ghost",
   link: "btn-link",
   subtle: "btn-ghost bg-base-200 hover:bg-base-300"
-}, yt = {
+}, wt = {
   default: "btn-md",
   sm: "btn-sm",
   xs: "btn-xs",
   lg: "btn-lg",
   icon: "btn-square btn-sm"
-}, wt = ne(
+}, kt = se(
   ({
     className: e,
     variant: s = "default",
@@ -52,10 +52,10 @@ const vt = {
     {
       ref: N,
       disabled: d || c,
-      className: se(
+      className: re(
         "btn inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
-        vt[s],
-        yt[r],
+        yt[s],
+        wt[r],
         a && "w-full",
         l && "rounded-full",
         e
@@ -70,10 +70,10 @@ const vt = {
     }
   )
 );
-wt.displayName = "Button";
-const kt = ne(
+kt.displayName = "Button";
+const Tt = se(
   ({ className: e, label: s, description: r, error: a, indeterminate: l, id: c, ...h }, p) => {
-    const x = pe(), d = c ?? x;
+    const x = he(), d = c ?? x;
     return /* @__PURE__ */ n("div", { className: "flex flex-col gap-1", children: [
       /* @__PURE__ */ n(
         "label",
@@ -89,7 +89,7 @@ const kt = ne(
                 },
                 id: d,
                 type: "checkbox",
-                className: se(
+                className: re(
                   "checkbox",
                   a && "checkbox-error",
                   e
@@ -108,8 +108,8 @@ const kt = ne(
     ] });
   }
 );
-kt.displayName = "Checkbox";
-const Ie = ne(
+Tt.displayName = "Checkbox";
+const je = se(
   ({
     className: e,
     label: s,
@@ -121,7 +121,7 @@ const Ie = ne(
     id: p,
     ...x
   }, d) => {
-    const o = pe(), N = p ?? o;
+    const o = he(), N = p ?? o;
     return /* @__PURE__ */ n("div", { className: "flex w-full flex-col gap-1", children: [
       s && /* @__PURE__ */ n("label", { className: "text-sm font-medium", htmlFor: N, children: [
         s,
@@ -135,7 +135,7 @@ const Ie = ne(
           {
             ref: d,
             id: N,
-            className: se(
+            className: re(
               "input w-full",
               a && "input-error",
               c && "pl-10",
@@ -151,8 +151,8 @@ const Ie = ne(
     ] });
   }
 );
-Ie.displayName = "Input";
-const da = Ie, Tt = ne(
+je.displayName = "Input";
+const ua = je, St = se(
   ({
     className: e,
     label: s,
@@ -166,7 +166,7 @@ const da = Ie, Tt = ne(
   }, d) => {
     const o = c.map(
       (T) => typeof T == "string" ? { value: T, label: T } : T
-    ), N = pe(), y = p ?? N;
+    ), N = he(), y = p ?? N;
     return /* @__PURE__ */ n("div", { className: "flex w-full flex-col gap-1", children: [
       s && /* @__PURE__ */ n("label", { className: "text-sm font-medium", htmlFor: y, children: [
         s,
@@ -178,7 +178,7 @@ const da = Ie, Tt = ne(
         {
           ref: d,
           id: y,
-          className: se(
+          className: re(
             "select w-full",
             a && "select-error",
             e
@@ -202,8 +202,8 @@ const da = Ie, Tt = ne(
     ] });
   }
 );
-Tt.displayName = "Select";
-const St = ne(
+St.displayName = "Select";
+const _t = se(
   ({
     className: e,
     label: s,
@@ -215,7 +215,7 @@ const St = ne(
     id: p,
     ...x
   }, d) => {
-    const o = pe(), N = p ?? o;
+    const o = he(), N = p ?? o;
     return /* @__PURE__ */ n("div", { className: "flex w-full flex-col gap-1", children: [
       s && /* @__PURE__ */ n("label", { className: "text-sm font-medium", htmlFor: N, children: [
         s,
@@ -228,7 +228,7 @@ const St = ne(
           ref: d,
           id: N,
           rows: c,
-          className: se(
+          className: re(
             "textarea w-full",
             a && "textarea-error",
             h && "resize-none",
@@ -241,22 +241,22 @@ const St = ne(
     ] });
   }
 );
-St.displayName = "Textarea";
-class je extends Error {
+_t.displayName = "Textarea";
+class Le extends Error {
   constructor(r, a, l) {
     super(r);
-    be(this, "status");
-    be(this, "payload");
+    fe(this, "status");
+    fe(this, "payload");
     this.name = "ApiError", this.status = a, this.payload = l;
   }
 }
-function _t() {
+function Ct() {
   if (typeof document > "u") return "";
   const e = document.cookie.split("; ").find((s) => s.startsWith("XSRF-TOKEN="));
   return e ? decodeURIComponent(e.split("=")[1] ?? "") : "";
 }
-function Le() {
-  const e = _t();
+function Oe() {
+  const e = Ct();
   return e ? { "X-XSRF-TOKEN": e } : {};
 }
 let ee = null;
@@ -271,22 +271,22 @@ function Pe() {
     ee = null;
   }), ee);
 }
-async function me(e, s, r) {
+async function ue(e, s, r) {
   return fetch(e, {
     ...s,
     headers: {
       ...r,
-      ...Le(),
+      ...Oe(),
       ...s.headers
     },
     credentials: "include"
   });
 }
-const Ct = /* @__PURE__ */ new Set(["POST", "PUT", "PATCH", "DELETE"]);
-function zt(e) {
-  return Ct.has((e ?? "GET").toUpperCase());
+const zt = /* @__PURE__ */ new Set(["POST", "PUT", "PATCH", "DELETE"]);
+function Et(e) {
+  return zt.has((e ?? "GET").toUpperCase());
 }
-function Oe(e, s) {
+function Fe(e, s) {
   if (e && typeof e == "object") {
     const r = e, a = r.errors;
     if (a && typeof a == "object") {
@@ -302,7 +302,7 @@ function Oe(e, s) {
   }
   return `HTTP ${s}`;
 }
-function ma(e) {
+function pa(e) {
   return e instanceof DOMException && e.name === "AbortError";
 }
 async function te(e, s = {}) {
@@ -310,34 +310,34 @@ async function te(e, s = {}) {
     "Content-Type": "application/json",
     Accept: "application/json"
   };
-  let a = await me(e, s, r);
-  if (a.status === 419 && zt(s.method) && (await Pe(), a = await me(e, s, r)), !a.ok) {
+  let a = await ue(e, s, r);
+  if (a.status === 419 && Et(s.method) && (await Pe(), a = await ue(e, s, r)), !a.ok) {
     const l = await a.json().catch(() => ({}));
-    throw new je(
-      Oe(l, a.status),
+    throw new Le(
+      Fe(l, a.status),
       a.status,
       l
     );
   }
   return a.status === 204 ? {} : a.json();
 }
-async function Et(e, s) {
+async function Dt(e, s) {
   const r = {
     method: "POST",
     body: s
   }, a = { Accept: "application/json" };
-  let l = await me(e, r, a);
-  if (l.status === 419 && (await Pe(), l = await me(e, r, a)), !l.ok) {
+  let l = await ue(e, r, a);
+  if (l.status === 419 && (await Pe(), l = await ue(e, r, a)), !l.ok) {
     const c = await l.json().catch(() => ({}));
-    throw new je(
-      Oe(c, l.status),
+    throw new Le(
+      Fe(c, l.status),
       l.status,
       c
     );
   }
   return l.status === 204 ? {} : l.json();
 }
-const Dt = {
+const At = {
   get: (e, s) => te(e, { signal: s == null ? void 0 : s.signal }),
   post: (e, s, r) => te(e, {
     method: "POST",
@@ -358,25 +358,25 @@ const Dt = {
     method: "DELETE",
     signal: s == null ? void 0 : s.signal
   }),
-  upload: Et
-}, re = "cs-CZ", q = "—";
-function le(e) {
+  upload: Dt
+}, le = "cs-CZ", q = "—";
+function ie(e) {
   if (e == null || e === "")
     return null;
   const s = e instanceof Date ? e : new Date(e);
   return Number.isNaN(s.getTime()) ? null : s;
 }
-function ua(e, s = {}) {
-  const r = le(e);
-  return r ? new Intl.DateTimeFormat(re, {
+function ha(e, s = {}) {
+  const r = ie(e);
+  return r ? new Intl.DateTimeFormat(le, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric"
   }).format(r) : s.fallback ?? q;
 }
-function Fe(e, s = {}) {
-  const r = le(e);
-  return r ? new Intl.DateTimeFormat(re, {
+function Me(e, s = {}) {
+  const r = ie(e);
+  return r ? new Intl.DateTimeFormat(le, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -384,25 +384,25 @@ function Fe(e, s = {}) {
     minute: "2-digit"
   }).format(r) : s.fallback ?? q;
 }
-function pa(e, s = {}) {
-  const r = le(e);
-  return r ? new Intl.DateTimeFormat(re, {
+function ba(e, s = {}) {
+  const r = ie(e);
+  return r ? new Intl.DateTimeFormat(le, {
     day: "numeric",
     month: "long",
     year: "numeric"
   }).format(r) : s.fallback ?? q;
 }
-function ha(e, s = {}) {
-  const r = le(e);
-  return r ? new Intl.DateTimeFormat(re, {
+function fa(e, s = {}) {
+  const r = ie(e);
+  return r ? new Intl.DateTimeFormat(le, {
     hour: "2-digit",
     minute: "2-digit"
   }).format(r) : s.fallback ?? q;
 }
-function ba(e, s = {}) {
-  const r = le(e);
+function ga(e, s = {}) {
+  const r = ie(e);
   if (!r) return s.fallback ?? q;
-  const a = (r.getTime() - Date.now()) / 1e3, l = new Intl.RelativeTimeFormat(re, { numeric: "auto" }), c = [
+  const a = (r.getTime() - Date.now()) / 1e3, l = new Intl.RelativeTimeFormat(le, { numeric: "auto" }), c = [
     ["year", 31536e3],
     ["month", 2592e3],
     ["week", 604800],
@@ -416,7 +416,7 @@ function ba(e, s = {}) {
       return l.format(Math.round(a / p), h);
   return s.fallback ?? q;
 }
-const ue = {
+const pe = {
   open: "Otevřený",
   closed: "Zavřený"
 }, K = {
@@ -424,15 +424,15 @@ const ue = {
   feature: "Návrh",
   question: "Dotaz",
   other: "Jiné"
-}, B = {
+}, R = {
   low: "Nízká",
   medium: "Střední",
   high: "Vysoká",
   urgent: "Urgentní"
-}, Me = {
+}, Ke = {
   open: "badge-success",
   closed: "badge-ghost"
-}, Ke = {
+}, Re = {
   low: "badge-info",
   medium: "badge-neutral",
   high: "badge-warning",
@@ -442,7 +442,16 @@ const ue = {
   feature: "badge-primary",
   question: "badge-info",
   other: "badge-ghost"
-}, At = [
+}, ne = {
+  /** Plovoucí tlačítko pro nahlášení problému — nad modaly host aplikace. */
+  fab: 1100,
+  /** Modal pro vytvoření ticketu — nad FAB. */
+  modal: 1200,
+  /** Overlay screenshot pickeru — nad vším ostatním z balíčku. */
+  screenshotOverlay: 1300,
+  /** Spinner / chybový stav pickeru — nad jeho vlastním overlayem. */
+  screenshotTop: 1310
+}, $t = [
   "application/pdf",
   "image/jpeg",
   "image/png",
@@ -454,15 +463,15 @@ const ue = {
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "text/plain",
   "application/rtf"
-], $t = 20 * 1024 * 1024;
-function It({
+], It = 20 * 1024 * 1024;
+function jt({
   endpoint: e,
   mode: s = "immediate",
   onFilesChange: r,
   onUploaded: a,
   onUploadSuccess: l,
-  allowedMimes: c = At,
-  maxSize: h = $t,
+  allowedMimes: c = $t,
+  maxSize: h = It,
   maxFiles: p,
   showOcrCheckbox: x = !0,
   showMetadataInputs: d = !0,
@@ -470,20 +479,20 @@ function It({
   initialFiles: N,
   acceptedTypesLabel: y
 }) {
-  const [T, L] = f(() => N ?? []), [P, S] = f(!1), [u, b] = f([]), [z, I] = f(""), [C, Q] = f(""), [U, D] = f(!0), X = Y(null), F = Y([]);
+  const [T, L] = f(() => N ?? []), [O, S] = f(!1), [u, b] = f([]), [z, I] = f(""), [C, Q] = f(""), [Z, A] = f(!0), U = Y(null), F = Y([]);
   F.current = u;
-  const R = Math.round(h / (1024 * 1024)), Z = u.length >= 2, ie = d && !Z, m = (i) => c.includes(i.type) ? i.size > h ? `Soubor je příliš velký (max ${R} MB)` : null : "Nepovolený typ souboru", A = async (i) => {
+  const B = Math.round(h / (1024 * 1024)), X = u.length >= 2, oe = d && !X, m = (i) => c.includes(i.type) ? i.size > h ? `Soubor je příliš velký (max ${B} MB)` : null : "Nepovolený typ souboru", $ = async (i) => {
     const g = F.current[i];
     if (!g) return;
     const w = new FormData();
-    w.append("file", g.file), x && w.append("run_ocr", U ? "1" : "0"), d && (g.title.trim() && w.append("title", g.title.trim()), g.description.trim() && w.append("description", g.description.trim()));
+    w.append("file", g.file), x && w.append("run_ocr", Z ? "1" : "0"), d && (g.title.trim() && w.append("title", g.title.trim()), g.description.trim() && w.append("description", g.description.trim()));
     try {
       b(
         (k) => k.map(
           (E, j) => j === i ? { ...E, status: "uploading", progress: 10 } : E
         )
       );
-      const _ = await Dt.upload(e, w);
+      const _ = await At.upload(e, w);
       b(
         (k) => k.map(
           (E, j) => j === i ? { ...E, status: "success", progress: 100 } : E
@@ -495,17 +504,17 @@ function It({
       const k = _ instanceof Error ? _.message : "Neznámá chyba";
       b(
         (E) => E.map(
-          (j, he) => he === i ? { ...j, status: "error", error: k } : j
+          (j, be) => be === i ? { ...j, status: "error", error: k } : j
         )
       ), v.error(`Upload "${g.file.name}" selhal: ${k}`);
     }
-  }, O = (i, g, w) => {
+  }, P = (i, g, w) => {
     b(
       (_) => _.map((k, E) => E === i ? { ...k, [g]: w } : k)
     );
   }, H = () => {
     F.current.map((g, w) => ({ item: g, idx: w })).filter(({ item: g }) => g.status === "pending").forEach(({ idx: g }) => {
-      A(g);
+      $(g);
     });
   }, M = ae(
     (i) => {
@@ -526,42 +535,42 @@ function It({
           return;
         }
         b((_) => {
-          const k = _.length, j = k + w.length === 1, he = w.map((et, ye) => ({
-            file: et,
+          const k = _.length, j = k + w.length === 1, be = w.map((tt, we) => ({
+            file: tt,
             progress: 0,
             status: "pending",
             // Single mode: přebrat shared title/description z formuláře nahoře
             // Multi mode: každý soubor začne s prázdným per-file metadatem
-            title: j && ye === 0 ? z : "",
-            description: j && ye === 0 ? C : ""
-          })), Qe = [..._, ...he];
-          return j && setTimeout(() => A(k), 100), Qe;
+            title: j && we === 0 ? z : "",
+            description: j && we === 0 ? C : ""
+          })), et = [..._, ...be];
+          return j && setTimeout(() => $(k), 100), et;
         });
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [e, s, p, r, l, U, z, C, x, d]
+    [e, s, p, r, l, Z, z, C, x, d]
   ), Xe = (i) => {
     i.preventDefault(), S(!0);
-  }, Ze = (i) => {
-    i.preventDefault(), S(!1);
   }, He = (i) => {
+    i.preventDefault(), S(!1);
+  }, Ve = (i) => {
     i.preventDefault(), S(!1), i.dataTransfer.files.length > 0 && M(i.dataTransfer.files);
-  }, Ve = () => {
+  }, Ye = () => {
     var i;
-    (i = X.current) == null || i.click();
-  }, Ye = (i) => {
-    i.target.files && i.target.files.length > 0 && (M(i.target.files), i.target.value = "");
+    (i = U.current) == null || i.click();
   }, Ge = (i) => {
-    b((g) => g.filter((w, _) => _ !== i));
+    i.target.files && i.target.files.length > 0 && (M(i.target.files), i.target.value = "");
   }, We = (i) => {
+    b((g) => g.filter((w, _) => _ !== i));
+  }, qe = (i) => {
     L((g) => {
       const w = g.filter((_, k) => k !== i);
       return r == null || r(w), w;
     });
-  }, qe = c.join(","), Je = u.some((i) => i.status === "pending");
+  }, Je = c.join(","), Qe = u.some((i) => i.status === "pending");
   return /* @__PURE__ */ n("div", { className: o, children: [
-    ie && /* @__PURE__ */ n("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4 mb-4", children: [
+    oe && /* @__PURE__ */ n("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-4 mb-4", children: [
       /* @__PURE__ */ n("div", { className: "flex flex-col gap-1", children: [
         /* @__PURE__ */ t("label", { className: "label py-1 block", children: /* @__PURE__ */ t("span", { className: "font-medium text-xs", children: "Název dokumentu (volitelné)" }) }),
         /* @__PURE__ */ t(
@@ -595,8 +604,8 @@ function It({
         {
           type: "checkbox",
           className: "checkbox checkbox-sm checkbox-primary",
-          checked: U,
-          onChange: (i) => D(i.target.checked)
+          checked: Z,
+          onChange: (i) => A(i.target.checked)
         }
       ),
       /* @__PURE__ */ t("span", { className: "text-sm font-medium", children: "Spustit OCR rozpoznání textu" })
@@ -604,28 +613,28 @@ function It({
     /* @__PURE__ */ n(
       "div",
       {
-        className: `border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${P ? "border-primary bg-primary/10" : "border-base-300 hover:border-primary/50 hover:bg-base-200"}`,
+        className: `border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${O ? "border-primary bg-primary/10" : "border-base-300 hover:border-primary/50 hover:bg-base-200"}`,
         onDragOver: Xe,
-        onDragLeave: Ze,
-        onDrop: He,
-        onClick: Ve,
+        onDragLeave: He,
+        onDrop: Ve,
+        onClick: Ye,
         children: [
           /* @__PURE__ */ t(
             "input",
             {
-              ref: X,
+              ref: U,
               type: "file",
               className: "hidden",
               multiple: !0,
-              accept: qe,
-              onChange: Ye
+              accept: Je,
+              onChange: Ge
             }
           ),
           /* @__PURE__ */ t(
-            ze,
+            Ee,
             {
               size: 48,
-              className: `mx-auto mb-3 ${P ? "text-primary" : "text-base-content/30"}`
+              className: `mx-auto mb-3 ${O ? "text-primary" : "text-base-content/30"}`
             }
           ),
           /* @__PURE__ */ n("p", { className: "text-base-content/70", children: [
@@ -635,13 +644,13 @@ function It({
           /* @__PURE__ */ n("p", { className: "text-xs text-base-content/50 mt-2", children: [
             y ?? "PDF, obrázky, Word, Excel, TXT",
             " (max ",
-            R,
+            B,
             " MB)"
           ] })
         ]
       }
     ),
-    Z && Je && /* @__PURE__ */ n("div", { className: "mt-3 flex items-center justify-between", children: [
+    X && Qe && /* @__PURE__ */ n("div", { className: "mt-3 flex items-center justify-between", children: [
       /* @__PURE__ */ t("p", { className: "text-xs text-base-content/60", children: "Vyplňte volitelné metadata u souborů a klikněte na Nahrát." }),
       /* @__PURE__ */ n(
         "button",
@@ -662,7 +671,7 @@ function It({
       {
         className: "flex items-center gap-3 p-3 rounded-lg bg-base-200",
         children: [
-          /* @__PURE__ */ t(ge, { size: 20, className: "text-base-content/50 shrink-0" }),
+          /* @__PURE__ */ t(xe, { size: 20, className: "text-base-content/50 shrink-0" }),
           /* @__PURE__ */ n("div", { className: "flex-1 min-w-0", children: [
             /* @__PURE__ */ t("div", { className: "text-sm font-medium truncate", children: i.name }),
             /* @__PURE__ */ n("div", { className: "text-xs text-base-content/50", children: [
@@ -675,7 +684,7 @@ function It({
             {
               type: "button",
               className: "btn btn-ghost btn-xs btn-circle",
-              onClick: () => We(g),
+              onClick: () => qe(g),
               title: "Odebrat",
               "aria-label": "Odebrat",
               children: /* @__PURE__ */ t(W, { size: 14 })
@@ -691,7 +700,7 @@ function It({
         className: `flex flex-col gap-2 p-3 rounded-lg ${i.status === "error" ? "bg-error/10" : i.status === "success" ? "bg-success/10" : "bg-base-200"}`,
         children: [
           /* @__PURE__ */ n("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ t(ge, { size: 20, className: "text-base-content/50 shrink-0" }),
+            /* @__PURE__ */ t(xe, { size: 20, className: "text-base-content/50 shrink-0" }),
             /* @__PURE__ */ n("div", { className: "flex-1 min-w-0", children: [
               /* @__PURE__ */ t("div", { className: "text-sm font-medium truncate", children: i.file.name }),
               /* @__PURE__ */ n("div", { className: "text-xs text-base-content/50", children: [
@@ -709,20 +718,20 @@ function It({
               )
             ] }),
             i.status === "uploading" && /* @__PURE__ */ t("span", { className: "loading loading-spinner loading-sm text-primary" }),
-            i.status === "success" && /* @__PURE__ */ t(Ne, { size: 20, className: "text-success" }),
+            i.status === "success" && /* @__PURE__ */ t(ve, { size: 20, className: "text-success" }),
             (i.status === "error" || i.status === "pending") && /* @__PURE__ */ t(
               "button",
               {
                 type: "button",
                 className: "btn btn-ghost btn-xs btn-circle",
-                onClick: () => Ge(g),
+                onClick: () => We(g),
                 title: "Odebrat",
                 "aria-label": "Odebrat",
                 children: /* @__PURE__ */ t(W, { size: 14 })
               }
             )
           ] }),
-          Z && d && /* @__PURE__ */ n("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-2 pl-8", children: [
+          X && d && /* @__PURE__ */ n("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-2 pl-8", children: [
             /* @__PURE__ */ t(
               "input",
               {
@@ -730,7 +739,7 @@ function It({
                 className: "input input-bordered input-xs",
                 placeholder: "Název (volitelné)",
                 value: i.title,
-                onChange: (w) => O(g, "title", w.target.value),
+                onChange: (w) => P(g, "title", w.target.value),
                 disabled: i.status === "uploading" || i.status === "success"
               }
             ),
@@ -741,7 +750,7 @@ function It({
                 className: "input input-bordered input-xs",
                 placeholder: "Popis (volitelné)",
                 value: i.description,
-                onChange: (w) => O(g, "description", w.target.value),
+                onChange: (w) => P(g, "description", w.target.value),
                 disabled: i.status === "uploading" || i.status === "success"
               }
             )
@@ -752,12 +761,12 @@ function It({
     )) })
   ] });
 }
-const we = 10;
-function ke(e) {
+const ke = 10;
+function Te(e) {
   const s = Math.min(e.startX, e.endX), r = Math.min(e.startY, e.endY), a = Math.abs(e.endX - e.startX), l = Math.abs(e.endY - e.startY);
   return { x: s, y: r, width: a, height: l };
 }
-function jt({ onCapture: e, onCancel: s, maxSize: r }) {
+function Lt({ onCapture: e, onCancel: s, maxSize: r }) {
   const a = Y(null), l = Y(null), [c, h] = f(null), [p, x] = f(!1), [d, o] = f(!1), [N, y] = f(null);
   G(() => {
     const u = (b) => {
@@ -783,18 +792,18 @@ function jt({ onCapture: e, onCancel: s, maxSize: r }) {
       return;
     const z = u.clientX - b.left, I = u.clientY - b.top;
     h({ ...c, endX: z, endY: I });
-  }, [p, c]), P = ae(async () => {
+  }, [p, c]), O = ae(async () => {
     if (!p || !c)
       return;
     x(!1);
-    const u = ke(c);
-    if (u.width < we || u.height < we) {
+    const u = Te(c);
+    if (u.width < ke || u.height < ke) {
       h(null);
       return;
     }
     o(!0);
     try {
-      const { default: b } = await import("html2canvas-pro"), z = window.devicePixelRatio || 1, I = a.current, C = l.current, Q = (D) => !!(I && (D === I || I.contains(D)) || C && (D === C || C.contains(D)));
+      const { default: b } = await import("html2canvas-pro"), z = window.devicePixelRatio || 1, I = a.current, C = l.current, Q = (A) => !!(I && (A === I || I.contains(A)) || C && (A === C || C.contains(A)));
       (await b(document.body, {
         x: window.scrollX + u.x,
         y: window.scrollY + u.y,
@@ -804,18 +813,18 @@ function jt({ onCapture: e, onCancel: s, maxSize: r }) {
         useCORS: !0,
         logging: !1,
         ignoreElements: Q
-      })).toBlob((D) => {
-        if (!D) {
+      })).toBlob((A) => {
+        if (!A) {
           y("Nepodařilo se vytvořit obrázek");
           return;
         }
-        if (r && D.size > r) {
-          const R = Math.round(r / 1024 / 1024);
-          y(`Screenshot je příliš velký (max ${R} MB).`);
+        if (r && A.size > r) {
+          const B = Math.round(r / 1024 / 1024);
+          y(`Screenshot je příliš velký (max ${B} MB).`);
           return;
         }
         const F = `screenshot-${(/* @__PURE__ */ new Date()).toISOString().replace(/[:.]/g, "-")}.png`;
-        e(new File([D], F, { type: "image/png" }));
+        e(new File([A], F, { type: "image/png" }));
       }, "image/png");
     } catch (b) {
       const z = b instanceof Error ? b.message : "Neznámá chyba";
@@ -823,21 +832,29 @@ function jt({ onCapture: e, onCancel: s, maxSize: r }) {
     }
   }, [p, c, e, r]);
   if (N)
-    return /* @__PURE__ */ t("div", { className: "fixed inset-0 z-[70] flex items-center justify-center bg-base-content/60", children: /* @__PURE__ */ t("div", { role: "alert", className: "alert alert-error max-w-md", children: /* @__PURE__ */ n("div", { className: "flex flex-col gap-3", children: [
-      /* @__PURE__ */ t("span", { children: N }),
-      /* @__PURE__ */ t("button", { type: "button", className: "btn btn-sm", onClick: s, children: "Zavřít" })
-    ] }) }) });
-  const S = c ? ke(c) : null;
+    return /* @__PURE__ */ t(
+      "div",
+      {
+        className: "fixed inset-0 flex items-center justify-center bg-base-content/60",
+        style: { zIndex: ne.screenshotTop },
+        children: /* @__PURE__ */ t("div", { role: "alert", className: "alert alert-error max-w-md", children: /* @__PURE__ */ n("div", { className: "flex flex-col gap-3", children: [
+          /* @__PURE__ */ t("span", { children: N }),
+          /* @__PURE__ */ t("button", { type: "button", className: "btn btn-sm", onClick: s, children: "Zavřít" })
+        ] }) })
+      }
+    );
+  const S = c ? Te(c) : null;
   return /* @__PURE__ */ n(J, { children: [
     /* @__PURE__ */ n(
       "div",
       {
         ref: a,
-        className: "fixed inset-0 z-[60] cursor-crosshair select-none overflow-hidden bg-base-content/40",
+        className: "fixed inset-0 cursor-crosshair select-none overflow-hidden bg-base-content/40",
+        style: { zIndex: ne.screenshotOverlay },
         onMouseDown: T,
         onMouseMove: L,
-        onMouseUp: P,
-        onMouseLeave: P,
+        onMouseUp: O,
+        onMouseLeave: O,
         children: [
           p && S && S.width > 0 && S.height > 0 && /* @__PURE__ */ t(
             "div",
@@ -871,13 +888,14 @@ function jt({ onCapture: e, onCancel: s, maxSize: r }) {
       "div",
       {
         ref: l,
-        className: "fixed inset-0 z-[70] flex items-center justify-center bg-base-content/60",
+        className: "fixed inset-0 flex items-center justify-center bg-base-content/60",
+        style: { zIndex: ne.screenshotTop },
         children: /* @__PURE__ */ t("span", { className: "loading loading-spinner loading-lg text-primary" })
       }
     )
   ] });
 }
-const V = 20, Te = 10 * 1024 * 1024, Lt = [
+const V = 20, Se = 10 * 1024 * 1024, Ot = [
   "image/jpeg",
   "image/png",
   "image/webp",
@@ -890,19 +908,35 @@ const V = 20, Te = 10 * 1024 * 1024, Lt = [
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "application/zip",
   "application/x-zip-compressed"
-], Se = {
+];
+function Pt(e) {
+  var a;
+  const s = (a = e == null ? void 0 : e.props) == null ? void 0 : a.ticketsFlash, r = s == null ? void 0 : s.created;
+  if (!(r != null && r.url)) {
+    v.success("Ticket byl úspěšně vytvořen");
+    return;
+  }
+  v.success(`Ticket #${r.id} byl vytvořen`, {
+    description: r.title,
+    action: {
+      label: "Zobrazit",
+      onClick: () => D.visit(r.url)
+    }
+  });
+}
+const _e = {
   title: "",
   description: "",
   category: "bug",
   priority: "medium"
 };
-function xe({ open: e, onClose: s, onCreated: r }) {
-  const [a, l] = f({ ...Se }), [c, h] = f([]), [p, x] = f(!1), [d, o] = f({}), [N, y] = f(!1), [T, L] = f(0);
+function Ne({ open: e, onClose: s, onCreated: r }) {
+  const [a, l] = f({ ..._e }), [c, h] = f([]), [p, x] = f(!1), [d, o] = f({}), [N, y] = f(!1), [T, L] = f(0);
   if (G(() => {
-    e && (l({ ...Se }), h([]), o({}), y(!1), L((u) => u + 1));
+    e && (l({ ..._e }), h([]), o({}), y(!1), L((u) => u + 1));
   }, [e]), !e) return null;
-  const P = (u) => {
-    u.preventDefault(), x(!0), o({}), $.post(
+  const O = (u) => {
+    u.preventDefault(), x(!0), o({}), D.post(
       "/tickets",
       {
         title: a.title,
@@ -917,8 +951,8 @@ function xe({ open: e, onClose: s, onCreated: r }) {
       },
       {
         forceFormData: !0,
-        onSuccess: () => {
-          v.success("Ticket byl úspěšně vytvořen"), r == null || r(), s();
+        onSuccess: (b) => {
+          Pt(b), r == null || r(), s();
         },
         onError: (b) => {
           o(b), v.error("Zkontrolujte vyplněná pole");
@@ -934,11 +968,14 @@ function xe({ open: e, onClose: s, onCreated: r }) {
       "div",
       {
         className: "modal modal-open",
-        style: N ? { display: "none" } : void 0,
+        style: {
+          zIndex: ne.modal,
+          ...N ? { display: "none" } : {}
+        },
         children: [
           /* @__PURE__ */ n("div", { className: "modal-box max-w-2xl", children: [
             /* @__PURE__ */ t("h3", { className: "font-bold text-lg mb-4", children: "Nový ticket" }),
-            /* @__PURE__ */ n("form", { onSubmit: P, className: "space-y-4", children: [
+            /* @__PURE__ */ n("form", { onSubmit: O, className: "space-y-4", children: [
               /* @__PURE__ */ n("div", { className: "flex flex-col gap-1", children: [
                 /* @__PURE__ */ t("label", { className: "label py-1 block", children: /* @__PURE__ */ n("span", { className: "text-sm font-medium", children: [
                   "Název ",
@@ -980,7 +1017,7 @@ function xe({ open: e, onClose: s, onCreated: r }) {
                       className: "select select-bordered w-full",
                       value: a.priority,
                       onChange: (u) => l({ ...a, priority: u.target.value }),
-                      children: Object.keys(B).map((u) => /* @__PURE__ */ t("option", { value: u, children: B[u] }, u))
+                      children: Object.keys(R).map((u) => /* @__PURE__ */ t("option", { value: u, children: R[u] }, u))
                     }
                   )
                 ] })
@@ -1014,7 +1051,7 @@ function xe({ open: e, onClose: s, onCreated: r }) {
                     disabled: c.length >= V,
                     title: c.length >= V ? `Maximum ${V} příloh` : "Pořídit screenshot stránky a přidat do příloh",
                     children: [
-                      /* @__PURE__ */ t(rt, { size: 14 }),
+                      /* @__PURE__ */ t(lt, { size: 14 }),
                       "Udělat screenshot"
                     ]
                   }
@@ -1023,12 +1060,12 @@ function xe({ open: e, onClose: s, onCreated: r }) {
               /* @__PURE__ */ n("div", { className: "flex flex-col gap-1", children: [
                 /* @__PURE__ */ t("label", { className: "label py-1 block", children: /* @__PURE__ */ t("span", { className: "text-sm font-medium", children: "Přílohy (volitelné)" }) }),
                 /* @__PURE__ */ t(
-                  It,
+                  jt,
                   {
                     mode: "staged",
-                    allowedMimes: Lt,
+                    allowedMimes: Ot,
                     acceptedTypesLabel: "Obrázky, PDF, TXT/LOG/CSV, DOCX/XLSX, ZIP",
-                    maxSize: Te,
+                    maxSize: Se,
                     maxFiles: V,
                     showOcrCheckbox: !1,
                     showMetadataInputs: !1,
@@ -1079,16 +1116,16 @@ function xe({ open: e, onClose: s, onCreated: r }) {
       }
     ),
     N && /* @__PURE__ */ t(
-      jt,
+      Lt,
       {
         onCapture: S,
         onCancel: () => y(!1),
-        maxSize: Te
+        maxSize: Se
       }
     )
   ] });
 }
-function Pt({ filters: e, onChange: s, canViewAllOrgs: r }) {
+function Ft({ filters: e, onChange: s, canViewAllOrgs: r }) {
   return /* @__PURE__ */ t("div", { className: "card bg-base-100 shadow-sm", children: /* @__PURE__ */ n("div", { className: "card-body p-4", children: [
     /* @__PURE__ */ n("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3", children: [
       /* @__PURE__ */ n("div", { className: "flex flex-col gap-1 lg:col-span-2", children: [
@@ -1099,7 +1136,7 @@ function Pt({ filters: e, onChange: s, canViewAllOrgs: r }) {
             {
               className: "join-item btn btn-square btn-sm bg-base-200 pointer-events-none",
               "aria-hidden": "true",
-              children: /* @__PURE__ */ t(lt, { size: 16 })
+              children: /* @__PURE__ */ t(it, { size: 16 })
             }
           ),
           /* @__PURE__ */ t(
@@ -1127,7 +1164,7 @@ function Pt({ filters: e, onChange: s, canViewAllOrgs: r }) {
             }),
             children: [
               /* @__PURE__ */ t("option", { value: "", children: "Vše" }),
-              Object.keys(ue).map((a) => /* @__PURE__ */ t("option", { value: a, children: ue[a] }, a))
+              Object.keys(pe).map((a) => /* @__PURE__ */ t("option", { value: a, children: pe[a] }, a))
             ]
           }
         )
@@ -1163,7 +1200,7 @@ function Pt({ filters: e, onChange: s, canViewAllOrgs: r }) {
             }),
             children: [
               /* @__PURE__ */ t("option", { value: "", children: "Vše" }),
-              Object.keys(B).map((a) => /* @__PURE__ */ t("option", { value: a, children: B[a] }, a))
+              Object.keys(R).map((a) => /* @__PURE__ */ t("option", { value: a, children: R[a] }, a))
             ]
           }
         )
@@ -1183,22 +1220,22 @@ function Pt({ filters: e, onChange: s, canViewAllOrgs: r }) {
     ] }) })
   ] }) });
 }
-const Ot = (e) => Fe(e);
-function Ft({ ticket: e }) {
+const Mt = (e) => Me(e);
+function Kt({ ticket: e }) {
   var r, a;
   return /* @__PURE__ */ n("tr", { className: "hover:bg-base-200 cursor-pointer", onClick: () => {
-    $.visit(`/tickets/${e.uuid}`);
+    D.visit(`/tickets/${e.uuid}`);
   }, children: [
-    /* @__PURE__ */ t("td", { children: /* @__PURE__ */ t("span", { className: `badge ${Me[e.status]} badge-sm`, children: ue[e.status] }) }),
+    /* @__PURE__ */ t("td", { children: /* @__PURE__ */ t("span", { className: `badge ${Ke[e.status]} badge-sm`, children: pe[e.status] }) }),
     /* @__PURE__ */ t("td", { children: /* @__PURE__ */ t("span", { className: `badge ${Be[e.category]} badge-sm`, children: K[e.category] }) }),
-    /* @__PURE__ */ t("td", { children: /* @__PURE__ */ t("span", { className: `badge ${Ke[e.priority]} badge-sm`, children: B[e.priority] }) }),
+    /* @__PURE__ */ t("td", { children: /* @__PURE__ */ t("span", { className: `badge ${Re[e.priority]} badge-sm`, children: R[e.priority] }) }),
     /* @__PURE__ */ t("td", { className: "font-medium", children: e.title }),
     /* @__PURE__ */ t("td", { className: "text-sm text-base-content/70", children: ((r = e.creator) == null ? void 0 : r.name) ?? "—" }),
-    /* @__PURE__ */ t("td", { className: "text-sm text-base-content/70", children: Ot(e.created_at) }),
+    /* @__PURE__ */ t("td", { className: "text-sm text-base-content/70", children: Mt(e.created_at) }),
     /* @__PURE__ */ t("td", { className: "text-sm text-base-content/70", children: ((a = e.attachments) == null ? void 0 : a.length) > 0 ? `${e.attachments.length}× příloha` : "—" })
   ] });
 }
-function Mt({ tickets: e }) {
+function Rt({ tickets: e }) {
   return e.length === 0 ? /* @__PURE__ */ t("div", { className: "alert", children: /* @__PURE__ */ t("span", { children: "Žádné tickety neodpovídají filtrům." }) }) : /* @__PURE__ */ t("div", { className: "overflow-x-auto", children: /* @__PURE__ */ n("table", { className: "table table-zebra", children: [
     /* @__PURE__ */ t("thead", { children: /* @__PURE__ */ n("tr", { children: [
       /* @__PURE__ */ t("th", { children: "Stav" }),
@@ -1209,13 +1246,13 @@ function Mt({ tickets: e }) {
       /* @__PURE__ */ t("th", { children: "Vytvořeno" }),
       /* @__PURE__ */ t("th", { children: "Přílohy" })
     ] }) }),
-    /* @__PURE__ */ t("tbody", { children: e.map((s) => /* @__PURE__ */ t(Ft, { ticket: s }, s.uuid)) })
+    /* @__PURE__ */ t("tbody", { children: e.map((s) => /* @__PURE__ */ t(Kt, { ticket: s }, s.uuid)) })
   ] }) });
 }
-function fa({ tickets: e, filters: s, can: r }) {
+function xa({ tickets: e, filters: s, can: r }) {
   const [a, l] = f(s), [c, h] = f(!1), p = Y(null), x = ae((d) => {
     const o = new URLSearchParams();
-    d.search && o.append("search", d.search), d.status && o.append("status", d.status), d.category && o.append("category", d.category), d.priority && o.append("priority", d.priority), d.all_orgs && o.append("all_orgs", "1"), $.get(`/tickets?${o.toString()}`, {}, {
+    d.search && o.append("search", d.search), d.status && o.append("status", d.status), d.category && o.append("category", d.category), d.priority && o.append("priority", d.priority), d.all_orgs && o.append("all_orgs", "1"), D.get(`/tickets?${o.toString()}`, {}, {
       preserveState: !0,
       preserveScroll: !0,
       replace: !0
@@ -1226,7 +1263,7 @@ function fa({ tickets: e, filters: s, can: r }) {
   }, 300), () => {
     p.current && window.clearTimeout(p.current);
   }), [a]), /* @__PURE__ */ n(J, { children: [
-    /* @__PURE__ */ t(Ce, { title: "Tickety" }),
+    /* @__PURE__ */ t(ze, { title: "Tickety" }),
     /* @__PURE__ */ n("div", { className: "space-y-4 p-4 md:p-6", children: [
       /* @__PURE__ */ n("div", { className: "flex flex-col md:flex-row md:items-center md:justify-between gap-3", children: [
         /* @__PURE__ */ n("div", { children: [
@@ -1240,21 +1277,21 @@ function fa({ tickets: e, filters: s, can: r }) {
             className: "btn btn-primary",
             onClick: () => h(!0),
             children: [
-              /* @__PURE__ */ t(it, { size: 18 }),
+              /* @__PURE__ */ t(ot, { size: 18 }),
               "Nový ticket"
             ]
           }
         )
       ] }),
       /* @__PURE__ */ t(
-        Pt,
+        Ft,
         {
           filters: a,
           onChange: l,
           canViewAllOrgs: (r == null ? void 0 : r.viewAllOrgs) ?? !1
         }
       ),
-      /* @__PURE__ */ t("div", { className: "card bg-base-100 shadow-sm", children: /* @__PURE__ */ t("div", { className: "card-body p-0", children: /* @__PURE__ */ t(Mt, { tickets: e.data }) }) }),
+      /* @__PURE__ */ t("div", { className: "card bg-base-100 shadow-sm", children: /* @__PURE__ */ t("div", { className: "card-body p-0", children: /* @__PURE__ */ t(Rt, { tickets: e.data }) }) }),
       e.last_page > 1 && /* @__PURE__ */ t("div", { className: "flex justify-center mt-4", children: /* @__PURE__ */ t("div", { className: "join", children: Array.from({ length: e.last_page }, (d, o) => o + 1).map((d) => {
         const o = new URLSearchParams();
         return a.search && o.append("search", a.search), a.status && o.append("status", a.status), a.category && o.append("category", a.category), a.priority && o.append("priority", a.priority), a.all_orgs && o.append("all_orgs", "1"), o.append("page", String(d)), /* @__PURE__ */ t(
@@ -1262,7 +1299,7 @@ function fa({ tickets: e, filters: s, can: r }) {
           {
             type: "button",
             className: `join-item btn btn-sm ${d === e.current_page ? "btn-active" : ""}`,
-            onClick: () => $.get(`/tickets?${o.toString()}`, {}, {
+            onClick: () => D.get(`/tickets?${o.toString()}`, {}, {
               preserveState: !0,
               preserveScroll: !0
             }),
@@ -1273,25 +1310,25 @@ function fa({ tickets: e, filters: s, can: r }) {
       }) }) })
     ] }),
     /* @__PURE__ */ t(
-      xe,
+      Ne,
       {
         open: c,
         onClose: () => h(!1),
-        onCreated: () => $.reload({ only: ["tickets", "ticketsOpenCount"] })
+        onCreated: () => D.reload({ only: ["tickets", "ticketsOpenCount"] })
       }
     )
   ] });
 }
-function Re(e) {
-  return e.startsWith("image/") ? Ee : e === "application/pdf" ? de : e === "application/zip" || e === "application/x-zip-compressed" ? ot : e === "text/plain" || e === "text/csv" || e === "application/csv" ? de : e === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? ct : e === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? de : ge;
+function Ze(e) {
+  return e.startsWith("image/") ? De : e === "application/pdf" ? me : e === "application/zip" || e === "application/x-zip-compressed" ? ct : e === "text/plain" || e === "text/csv" || e === "application/csv" ? me : e === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? dt : e === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? me : xe;
 }
 function Ue(e) {
   return e.startsWith("image/");
 }
-function Kt(e) {
+function Bt(e) {
   return e === "application/pdf";
 }
-const Bt = {
+const Zt = {
   title: "název",
   description: "popis",
   category: "kategorie",
@@ -1302,61 +1339,61 @@ const Bt = {
   comment_added: "přidal komentář",
   comment_deleted: "smazal komentář"
 };
-function Rt(e) {
-  return e === "comment_added" || e === "comment_deleted" ? mt : e === "attachment_added" ? Ee : e === "attachment_removed" ? ve : de;
+function Ut(e) {
+  return e === "comment_added" || e === "comment_deleted" ? ut : e === "attachment_added" ? De : e === "attachment_removed" ? ye : me;
 }
-function oe(e) {
+function ce(e) {
   return e === null ? "∅" : e.length > 50 ? e.substring(0, 50) + "…" : e;
 }
-function Ut(e) {
-  const s = Bt[e.field];
+function Xt(e) {
+  const s = Zt[e.field];
   if (e.field === "comment_added" || e.field === "comment_deleted")
     return s;
   if (e.field === "attachment_added")
-    return `přidal přílohu „${oe(e.new_value)}"`;
+    return `přidal přílohu „${ce(e.new_value)}"`;
   if (e.field === "attachment_removed")
-    return `smazal přílohu „${oe(e.old_value)}"`;
-  const r = oe(e.old_value), a = oe(e.new_value);
+    return `smazal přílohu „${ce(e.old_value)}"`;
+  const r = ce(e.old_value), a = ce(e.new_value);
   return `změnil ${s} z „${r}" na „${a}"`;
 }
-function Xt(e) {
+function Ht(e) {
   try {
-    return Ae(new Date(e), { addSuffix: !0, locale: $e });
+    return $e(new Date(e), { addSuffix: !0, locale: Ie });
   } catch {
     return e;
   }
 }
-function Zt({ events: e }) {
+function Vt({ events: e }) {
   if (e.length === 0)
     return null;
   const s = [...e].reverse();
   return /* @__PURE__ */ n("details", { className: "collapse collapse-arrow bg-base-100 border border-base-300", children: [
     /* @__PURE__ */ t("summary", { className: "collapse-title font-medium text-sm", children: /* @__PURE__ */ n("span", { className: "flex items-center gap-2", children: [
-      /* @__PURE__ */ t(dt, { size: 16 }),
+      /* @__PURE__ */ t(mt, { size: 16 }),
       "Historie změn (",
       e.length,
       ")"
     ] }) }),
     /* @__PURE__ */ t("div", { className: "collapse-content", children: /* @__PURE__ */ t("ul", { className: "space-y-2 text-sm", children: s.map((r, a) => {
       var c;
-      const l = Rt(r.field);
+      const l = Ut(r.field);
       return /* @__PURE__ */ n("li", { className: "flex items-start gap-2 text-base-content/70", children: [
         /* @__PURE__ */ t(l, { size: 14, className: "mt-0.5 flex-shrink-0" }),
         /* @__PURE__ */ n("div", { className: "flex-1", children: [
           /* @__PURE__ */ t("span", { className: "font-medium", children: ((c = r.user) == null ? void 0 : c.name) ?? "systém" }),
           " ",
-          Ut(r),
-          /* @__PURE__ */ t("span", { className: "text-xs text-base-content/40 ml-2", children: Xt(r.created_at) })
+          Xt(r),
+          /* @__PURE__ */ t("span", { className: "text-xs text-base-content/40 ml-2", children: Ht(r.created_at) })
         ] })
       ] }, a);
     }) }) })
   ] });
 }
-const ce = 5e3;
-function Ht({ ticketUuid: e }) {
+const de = 5e3;
+function Yt({ ticketUuid: e }) {
   const [s, r] = f(""), [a, l] = f(!1), c = () => {
     const o = s.trim();
-    !o || o.length > ce || a || (l(!0), $.post(
+    !o || o.length > de || a || (l(!0), D.post(
       `/tickets/${e}/comments`,
       { body: o },
       {
@@ -1375,7 +1412,7 @@ function Ht({ ticketUuid: e }) {
     o.preventDefault(), c();
   }, p = (o) => {
     (o.ctrlKey || o.metaKey) && o.key === "Enter" && (o.preventDefault(), c());
-  }, x = ce - s.length, d = x < 0;
+  }, x = de - s.length, d = x < 0;
   return /* @__PURE__ */ n("form", { onSubmit: h, className: "flex flex-col gap-1", children: [
     /* @__PURE__ */ n("label", { className: "label py-1", children: [
       /* @__PURE__ */ t("span", { className: "text-sm font-medium", children: "Přidat komentář" }),
@@ -1383,7 +1420,7 @@ function Ht({ ticketUuid: e }) {
         "Podporuje Markdown (",
         x,
         " / ",
-        ce,
+        de,
         " znaků)"
       ] })
     ] }),
@@ -1395,7 +1432,7 @@ function Ht({ ticketUuid: e }) {
         value: s,
         onChange: (o) => r(o.target.value),
         onKeyDown: p,
-        maxLength: ce + 100,
+        maxLength: de + 100,
         disabled: a
       }
     ),
@@ -1409,7 +1446,7 @@ function Ht({ ticketUuid: e }) {
           disabled: !s.trim() || d || a,
           children: [
             a && /* @__PURE__ */ t("span", { className: "loading loading-spinner loading-xs" }),
-            /* @__PURE__ */ t(ut, { size: 14 }),
+            /* @__PURE__ */ t(pt, { size: 14 }),
             "Odeslat"
           ]
         }
@@ -1417,20 +1454,20 @@ function Ht({ ticketUuid: e }) {
     ] })
   ] });
 }
-function Vt(e) {
+function Gt(e) {
   return e ? e.split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase() : "?";
 }
-function Yt(e) {
+function Wt(e) {
   try {
-    return Ae(new Date(e), { addSuffix: !0, locale: $e });
+    return $e(new Date(e), { addSuffix: !0, locale: Ie });
   } catch {
     return e;
   }
 }
-function Gt({ comment: e, isOwn: s }) {
+function qt({ comment: e, isOwn: s }) {
   var o, N;
   const [r, a] = f(!1), [l, c] = f(e.body), [h, p] = f(!1), x = () => {
-    !l.trim() || h || (p(!0), $.patch(
+    !l.trim() || h || (p(!0), D.patch(
       `/comments/${e.uuid}`,
       { body: l.trim() },
       {
@@ -1446,7 +1483,7 @@ function Gt({ comment: e, isOwn: s }) {
       }
     ));
   }, d = () => {
-    confirm("Opravdu smazat komentář? Akce je nevratná.") && (p(!0), $.delete(`/comments/${e.uuid}`, {
+    confirm("Opravdu smazat komentář? Akce je nevratná.") && (p(!0), D.delete(`/comments/${e.uuid}`, {
       preserveScroll: !0,
       onSuccess: () => v.success("Komentář smazán"),
       onError: () => v.error("Smazání selhalo"),
@@ -1456,10 +1493,10 @@ function Gt({ comment: e, isOwn: s }) {
   return (
     // Anchor pro notifikace cílící na /tickets/{uuid}#comment-{uuid}
     /* @__PURE__ */ n("div", { id: `comment-${e.uuid}`, className: `chat ${s ? "chat-end" : "chat-start"}`, children: [
-      /* @__PURE__ */ t("div", { className: "chat-image avatar avatar-placeholder", children: /* @__PURE__ */ t("div", { className: "bg-neutral text-neutral-content rounded-full w-8 h-8", children: /* @__PURE__ */ t("span", { className: "text-xs", children: Vt((o = e.author) == null ? void 0 : o.name) }) }) }),
+      /* @__PURE__ */ t("div", { className: "chat-image avatar avatar-placeholder", children: /* @__PURE__ */ t("div", { className: "bg-neutral text-neutral-content rounded-full w-8 h-8", children: /* @__PURE__ */ t("span", { className: "text-xs", children: Gt((o = e.author) == null ? void 0 : o.name) }) }) }),
       /* @__PURE__ */ n("div", { className: "chat-header", children: [
         /* @__PURE__ */ t("span", { className: "font-medium", children: ((N = e.author) == null ? void 0 : N.name) ?? "—" }),
-        /* @__PURE__ */ t("time", { className: "text-xs opacity-60 ml-2", children: Yt(e.created_at) }),
+        /* @__PURE__ */ t("time", { className: "text-xs opacity-60 ml-2", children: Wt(e.created_at) }),
         e.updated_at !== e.created_at && /* @__PURE__ */ t("span", { className: "text-xs opacity-40 ml-1 italic", children: "(upraveno)" })
       ] }),
       r ? (
@@ -1499,7 +1536,7 @@ function Gt({ comment: e, isOwn: s }) {
                 onClick: x,
                 disabled: !l.trim() || h,
                 children: [
-                  /* @__PURE__ */ t(Ne, { size: 12 }),
+                  /* @__PURE__ */ t(ve, { size: 12 }),
                   " Uložit"
                 ]
               }
@@ -1523,7 +1560,7 @@ function Gt({ comment: e, isOwn: s }) {
             title: "Upravit (do 5 min od vytvoření)",
             disabled: h,
             children: [
-              /* @__PURE__ */ t(De, { size: 12 }),
+              /* @__PURE__ */ t(Ae, { size: 12 }),
               " Upravit"
             ]
           }
@@ -1537,7 +1574,7 @@ function Gt({ comment: e, isOwn: s }) {
             title: "Smazat",
             disabled: h,
             children: [
-              /* @__PURE__ */ t(ve, { size: 12 }),
+              /* @__PURE__ */ t(ye, { size: 12 }),
               " Smazat"
             ]
           }
@@ -1546,13 +1583,13 @@ function Gt({ comment: e, isOwn: s }) {
     ] })
   );
 }
-function Wt({ comments: e }) {
+function Jt({ comments: e }) {
   var a;
-  const s = nt().props.auth, r = (a = s == null ? void 0 : s.user) == null ? void 0 : a.id;
+  const s = st().props.auth, r = (a = s == null ? void 0 : s.user) == null ? void 0 : a.id;
   return e.length === 0 ? /* @__PURE__ */ t("p", { className: "text-sm text-base-content/60 italic", children: "Zatím žádné komentáře. Buďte první." }) : /* @__PURE__ */ t("div", { className: "space-y-1", children: e.map((l) => {
     var c;
     return /* @__PURE__ */ t(
-      Gt,
+      qt,
       {
         comment: l,
         isOwn: ((c = l.author) == null ? void 0 : c.id) != null && l.author.id === r
@@ -1561,12 +1598,12 @@ function Wt({ comments: e }) {
     );
   }) });
 }
-function qt(e) {
+function Qt(e) {
   return e < 1024 ? `${e} B` : e < 1024 * 1024 ? `${(e / 1024).toFixed(1)} KB` : `${(e / 1024 / 1024).toFixed(2)} MB`;
 }
-function Jt({ attachment: e, onClose: s }) {
+function ea({ attachment: e, onClose: s }) {
   if (!e) return null;
-  const r = Re(e.mime_type);
+  const r = Ze(e.mime_type);
   return /* @__PURE__ */ t("div", { className: "modal modal-open", onClick: s, children: /* @__PURE__ */ n(
     "div",
     {
@@ -1593,7 +1630,7 @@ function Jt({ attachment: e, onClose: s }) {
             alt: e.filename,
             className: "w-full h-auto max-h-[80vh] object-contain rounded"
           }
-        ) : Kt(e.mime_type) ? /* @__PURE__ */ t(
+        ) : Bt(e.mime_type) ? /* @__PURE__ */ t(
           "iframe",
           {
             src: e.signed_url,
@@ -1605,7 +1642,7 @@ function Jt({ attachment: e, onClose: s }) {
           /* @__PURE__ */ n("div", { className: "flex flex-col items-center justify-center gap-3 py-12", children: [
             /* @__PURE__ */ t(r, { size: 64, className: "text-base-content/60" }),
             /* @__PURE__ */ t("div", { className: "font-medium text-center break-all px-4", children: e.filename }),
-            /* @__PURE__ */ t("div", { className: "text-sm text-base-content/60", children: qt(e.size_bytes) }),
+            /* @__PURE__ */ t("div", { className: "text-sm text-base-content/60", children: Qt(e.size_bytes) }),
             /* @__PURE__ */ n(
               "a",
               {
@@ -1613,7 +1650,7 @@ function Jt({ attachment: e, onClose: s }) {
                 download: !0,
                 className: "btn btn-primary mt-4 gap-2",
                 children: [
-                  /* @__PURE__ */ t(pt, { size: 16 }),
+                  /* @__PURE__ */ t(ht, { size: 16 }),
                   "Stáhnout"
                 ]
               }
@@ -1624,32 +1661,32 @@ function Jt({ attachment: e, onClose: s }) {
     }
   ) });
 }
-const Qt = 12e3, _e = (e) => Fe(e);
-function ea(e) {
+const ta = 12e3, Ce = (e) => Me(e);
+function aa(e) {
   return e < 1024 ? `${e} B` : e < 1024 * 1024 ? `${(e / 1024).toFixed(1)} KB` : `${(e / 1024 / 1024).toFixed(2)} MB`;
 }
-function ta({ ticket: e }) {
-  var D, X, F, R, Z, ie;
-  const [s, r] = f(null), [a, l] = f(!1), c = ((D = e.can) == null ? void 0 : D.update) ?? !1, [h, p] = f(!1), [x, d] = f(e.title), [o, N] = f(e.description), [y, T] = f(e.category), [L, P] = f(e.priority), S = Y(null);
+function na({ ticket: e }) {
+  var A, U, F, B, X, oe;
+  const [s, r] = f(null), [a, l] = f(!1), c = ((A = e.can) == null ? void 0 : A.update) ?? !1, [h, p] = f(!1), [x, d] = f(e.title), [o, N] = f(e.description), [y, T] = f(e.category), [L, O] = f(e.priority), S = Y(null);
   G(() => {
     let m;
-    const A = () => {
-      $.reload({
+    const $ = () => {
+      D.reload({
         only: ["ticket"]
       });
-    }, O = () => {
-      m === void 0 && (m = window.setInterval(A, Qt));
+    }, P = () => {
+      m === void 0 && (m = window.setInterval($, ta));
     }, H = () => {
       m !== void 0 && (window.clearInterval(m), m = void 0);
     }, M = () => {
-      document.hidden ? H() : (A(), O());
+      document.hidden ? H() : ($(), P());
     };
-    return document.hidden || O(), document.addEventListener("visibilitychange", M), () => {
+    return document.hidden || P(), document.addEventListener("visibilitychange", M), () => {
       H(), document.removeEventListener("visibilitychange", M);
     };
   }, []);
   const u = () => {
-    l(!0), $.patch(
+    l(!0), D.patch(
       `/tickets/${e.uuid}`,
       {
         title: x,
@@ -1667,13 +1704,13 @@ function ta({ ticket: e }) {
       }
     );
   }, b = () => {
-    d(e.title), N(e.description), T(e.category), P(e.priority), p(!1);
+    d(e.title), N(e.description), T(e.category), O(e.priority), p(!1);
   }, z = (m) => {
-    var O;
-    const A = (O = m.target.files) == null ? void 0 : O[0];
-    A && (l(!0), $.post(
+    var P;
+    const $ = (P = m.target.files) == null ? void 0 : P[0];
+    $ && (l(!0), D.post(
       `/tickets/${e.uuid}/attachments`,
-      { file: A },
+      { file: $ },
       {
         forceFormData: !0,
         preserveScroll: !0,
@@ -1688,7 +1725,7 @@ function ta({ ticket: e }) {
       }
     ));
   }, I = (m) => {
-    confirm(`Smazat přílohu „${m.filename}"?`) && (l(!0), $.delete(`/tickets/${e.uuid}/attachments/${m.uuid}`, {
+    confirm(`Smazat přílohu „${m.filename}"?`) && (l(!0), D.delete(`/tickets/${e.uuid}/attachments/${m.uuid}`, {
       preserveScroll: !0,
       onSuccess: () => v.success("Příloha smazána"),
       onError: () => v.error("Smazání selhalo"),
@@ -1696,7 +1733,7 @@ function ta({ ticket: e }) {
     }));
   }, C = () => {
     const m = e.status === "open" ? "close" : "reopen";
-    l(!0), $.post(
+    l(!0), D.post(
       `/tickets/${e.uuid}/${m}`,
       {},
       {
@@ -1715,31 +1752,31 @@ function ta({ ticket: e }) {
         credentials: "include",
         headers: {
           Accept: "text/markdown",
-          ...Le()
+          ...Oe()
         }
       });
       if (!m.ok)
         throw new Error(`HTTP ${m.status}`);
-      const O = `/validate
+      const P = `/validate
 
 ${await m.text()}
 
 Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
-      await navigator.clipboard.writeText(O), v.success("Zkopírováno do schránky");
+      await navigator.clipboard.writeText(P), v.success("Zkopírováno do schránky");
     } catch (m) {
-      const A = m instanceof Error ? m.message : "Neznámá chyba";
-      v.error(`Nepodařilo se zkopírovat: ${A}`);
+      const $ = m instanceof Error ? m.message : "Neznámá chyba";
+      v.error(`Nepodařilo se zkopírovat: ${$}`);
     }
-  }, U = () => {
+  }, Z = () => {
     window.open(`/api/tickets/${e.uuid}/export.md`, "_blank");
   };
   return /* @__PURE__ */ n("div", { className: "space-y-4", children: [
     /* @__PURE__ */ n("div", { className: "flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4", children: [
       /* @__PURE__ */ n("div", { className: "flex-1", children: [
         /* @__PURE__ */ n("div", { className: "flex flex-wrap items-center gap-2 mb-2", children: [
-          /* @__PURE__ */ t("span", { className: `badge ${Me[e.status]}`, children: ue[e.status] }),
+          /* @__PURE__ */ t("span", { className: `badge ${Ke[e.status]}`, children: pe[e.status] }),
           /* @__PURE__ */ t("span", { className: `badge ${Be[e.category]}`, children: K[e.category] }),
-          /* @__PURE__ */ t("span", { className: `badge ${Ke[e.priority]}`, children: B[e.priority] })
+          /* @__PURE__ */ t("span", { className: `badge ${Re[e.priority]}`, children: R[e.priority] })
         ] }),
         /* @__PURE__ */ t("h1", { className: "text-2xl font-bold", children: e.title })
       ] }),
@@ -1751,7 +1788,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
             className: "btn btn-sm btn-outline btn-primary",
             onClick: () => p(!0),
             children: [
-              /* @__PURE__ */ t(De, { size: 16 }),
+              /* @__PURE__ */ t(Ae, { size: 16 }),
               "Upravit"
             ]
           }
@@ -1763,7 +1800,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
             className: "btn btn-sm btn-ghost",
             onClick: Q,
             children: [
-              /* @__PURE__ */ t(ht, { size: 16 }),
+              /* @__PURE__ */ t(bt, { size: 16 }),
               "Kopírovat jako Claude prompt"
             ]
           }
@@ -1773,9 +1810,9 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
           {
             type: "button",
             className: "btn btn-sm btn-ghost",
-            onClick: U,
+            onClick: Z,
             children: [
-              /* @__PURE__ */ t(bt, { size: 16 }),
+              /* @__PURE__ */ t(ft, { size: 16 }),
               "Otevřít markdown"
             ]
           }
@@ -1788,7 +1825,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
             onClick: C,
             disabled: a,
             children: [
-              e.status === "open" ? /* @__PURE__ */ t(ft, { size: 16 }) : /* @__PURE__ */ t(gt, { size: 16 }),
+              e.status === "open" ? /* @__PURE__ */ t(gt, { size: 16 }) : /* @__PURE__ */ t(xt, { size: 16 }),
               e.status === "open" ? "Zavřít" : "Znovu otevřít"
             ]
           }
@@ -1832,9 +1869,9 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
             {
               className: "select select-bordered w-full",
               value: L,
-              onChange: (m) => P(m.target.value),
+              onChange: (m) => O(m.target.value),
               disabled: a,
-              children: Object.keys(B).map((m) => /* @__PURE__ */ t("option", { value: m, children: B[m] }, m))
+              children: Object.keys(R).map((m) => /* @__PURE__ */ t("option", { value: m, children: R[m] }, m))
             }
           )
         ] })
@@ -1875,7 +1912,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
             disabled: a || !x.trim() || !o.trim(),
             children: [
               a && /* @__PURE__ */ t("span", { className: "loading loading-spinner loading-xs" }),
-              /* @__PURE__ */ t(Ne, { size: 14 }),
+              /* @__PURE__ */ t(ve, { size: 14 }),
               " Uložit změny"
             ]
           }
@@ -1886,7 +1923,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
       /* @__PURE__ */ n("div", { children: [
         /* @__PURE__ */ t("span", { className: "text-base-content/60", children: "Vytvořil:" }),
         " ",
-        /* @__PURE__ */ t("span", { className: "font-medium", children: ((X = e.creator) == null ? void 0 : X.name) ?? "—" }),
+        /* @__PURE__ */ t("span", { className: "font-medium", children: ((U = e.creator) == null ? void 0 : U.name) ?? "—" }),
         ((F = e.creator) == null ? void 0 : F.email) && /* @__PURE__ */ n("span", { className: "text-base-content/60", children: [
           " (",
           e.creator.email,
@@ -1896,17 +1933,17 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
       /* @__PURE__ */ n("div", { children: [
         /* @__PURE__ */ t("span", { className: "text-base-content/60", children: "Organizace:" }),
         " ",
-        /* @__PURE__ */ t("span", { className: "font-medium", children: ((R = e.organization) == null ? void 0 : R.name) ?? "—" })
+        /* @__PURE__ */ t("span", { className: "font-medium", children: ((B = e.organization) == null ? void 0 : B.name) ?? "—" })
       ] }),
       /* @__PURE__ */ n("div", { children: [
         /* @__PURE__ */ t("span", { className: "text-base-content/60", children: "Vytvořeno:" }),
         " ",
-        /* @__PURE__ */ t("span", { className: "font-medium", children: _e(e.created_at) })
+        /* @__PURE__ */ t("span", { className: "font-medium", children: Ce(e.created_at) })
       ] }),
       e.closed_at && /* @__PURE__ */ n("div", { children: [
         /* @__PURE__ */ t("span", { className: "text-base-content/60", children: "Zavřeno:" }),
         " ",
-        /* @__PURE__ */ t("span", { className: "font-medium", children: _e(e.closed_at) })
+        /* @__PURE__ */ t("span", { className: "font-medium", children: Ce(e.closed_at) })
       ] }),
       e.page_url && /* @__PURE__ */ n("div", { className: "md:col-span-2", children: [
         /* @__PURE__ */ t("span", { className: "text-base-content/60", children: "URL stránky:" }),
@@ -1932,7 +1969,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
       /* @__PURE__ */ n("div", { className: "flex items-center justify-between gap-2", children: [
         /* @__PURE__ */ n("h2", { className: "card-title text-lg", children: [
           "Přílohy (",
-          ((Z = e.attachments) == null ? void 0 : Z.length) ?? 0,
+          ((X = e.attachments) == null ? void 0 : X.length) ?? 0,
           ")"
         ] }),
         c && /* @__PURE__ */ n(J, { children: [
@@ -1957,7 +1994,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
               },
               disabled: a,
               children: [
-                /* @__PURE__ */ t(ze, { size: 14 }),
+                /* @__PURE__ */ t(Ee, { size: 14 }),
                 " Přidat"
               ]
             }
@@ -1965,7 +2002,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
         ] })
       ] }),
       e.attachments && e.attachments.length > 0 ? /* @__PURE__ */ t("div", { className: "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2", children: e.attachments.map((m) => {
-        const A = Re(m.mime_type);
+        const $ = Ze(m.mime_type);
         return /* @__PURE__ */ n(
           "div",
           {
@@ -1987,10 +2024,10 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
                         className: "w-full h-32 object-cover",
                         loading: "lazy"
                       }
-                    ) : /* @__PURE__ */ t("div", { className: "w-full h-32 flex items-center justify-center bg-base-200", children: /* @__PURE__ */ t(A, { size: 48, className: "text-base-content/60" }) }),
+                    ) : /* @__PURE__ */ t("div", { className: "w-full h-32 flex items-center justify-center bg-base-200", children: /* @__PURE__ */ t($, { size: 48, className: "text-base-content/60" }) }),
                     /* @__PURE__ */ n("div", { className: "px-2 py-1.5 bg-base-100 border-t border-base-300", children: [
                       /* @__PURE__ */ t("div", { className: "text-xs font-medium truncate", children: m.filename }),
-                      /* @__PURE__ */ t("div", { className: "text-xs text-base-content/60", children: ea(m.size_bytes) })
+                      /* @__PURE__ */ t("div", { className: "text-xs text-base-content/60", children: aa(m.size_bytes) })
                     ] })
                   ]
                 }
@@ -2004,7 +2041,7 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
                   title: "Smazat přílohu",
                   "aria-label": "Smazat přílohu",
                   disabled: a,
-                  children: /* @__PURE__ */ t(ve, { size: 12 })
+                  children: /* @__PURE__ */ t(ye, { size: 12 })
                 }
               )
             ]
@@ -2016,38 +2053,38 @@ Zvaliduj tento bug — analyzuj příčinu a připrav podklad pro opravu.`;
     /* @__PURE__ */ t("div", { className: "card bg-base-100 shadow-sm", children: /* @__PURE__ */ n("div", { className: "card-body p-4", children: [
       /* @__PURE__ */ n("h2", { className: "card-title text-lg", children: [
         "Komentáře (",
-        ((ie = e.comments) == null ? void 0 : ie.length) ?? 0,
+        ((oe = e.comments) == null ? void 0 : oe.length) ?? 0,
         ")"
       ] }),
-      /* @__PURE__ */ t(Wt, { comments: e.comments ?? [] }),
+      /* @__PURE__ */ t(Jt, { comments: e.comments ?? [] }),
       /* @__PURE__ */ t("div", { className: "divider my-2" }),
-      /* @__PURE__ */ t(Ht, { ticketUuid: e.uuid })
+      /* @__PURE__ */ t(Yt, { ticketUuid: e.uuid })
     ] }) }),
-    e.audit_log && e.audit_log.length > 0 && /* @__PURE__ */ t(Zt, { events: e.audit_log }),
-    /* @__PURE__ */ t(Jt, { attachment: s, onClose: () => r(null) })
+    e.audit_log && e.audit_log.length > 0 && /* @__PURE__ */ t(Vt, { events: e.audit_log }),
+    /* @__PURE__ */ t(ea, { attachment: s, onClose: () => r(null) })
   ] });
 }
-function ga({ ticket: e }) {
+function Na({ ticket: e }) {
   return /* @__PURE__ */ n(J, { children: [
-    /* @__PURE__ */ t(Ce, { title: `Ticket: ${e.title}` }),
+    /* @__PURE__ */ t(ze, { title: `Ticket: ${e.title}` }),
     /* @__PURE__ */ n("div", { className: "space-y-4 p-4 md:p-6", children: [
-      /* @__PURE__ */ n(st, { href: "/tickets", className: "btn btn-ghost btn-sm", children: [
-        /* @__PURE__ */ t(xt, { size: 16 }),
+      /* @__PURE__ */ n(rt, { href: "/tickets", className: "btn btn-ghost btn-sm", children: [
+        /* @__PURE__ */ t(Nt, { size: 16 }),
         "Zpět na seznam"
       ] }),
-      /* @__PURE__ */ t(ta, { ticket: e })
+      /* @__PURE__ */ t(na, { ticket: e })
     ] })
   ] });
 }
-const fe = "ticketsFabHidden";
-function xa() {
-  const [e, s] = f(() => typeof window > "u" ? !1 : sessionStorage.getItem(fe) === "true"), [r, a] = f(!1);
+const ge = "ticketsFabHidden";
+function va() {
+  const [e, s] = f(() => typeof window > "u" ? !1 : sessionStorage.getItem(ge) === "true"), [r, a] = f(!1);
   return G(() => {
-    typeof window < "u" && localStorage.removeItem(fe);
+    typeof window < "u" && localStorage.removeItem(ge);
   }, []), G(() => {
-    sessionStorage.setItem(fe, String(e));
-  }, [e]), e ? r ? /* @__PURE__ */ t(xe, { open: r, onClose: () => a(!1) }) : null : /* @__PURE__ */ n(J, { children: [
-    /* @__PURE__ */ t("div", { className: "fixed bottom-4 right-4 z-50", children: /* @__PURE__ */ t("div", { className: "tooltip tooltip-left", "data-tip": "Nahlásit problém", children: /* @__PURE__ */ n(
+    sessionStorage.setItem(ge, String(e));
+  }, [e]), e ? r ? /* @__PURE__ */ t(Ne, { open: r, onClose: () => a(!1) }) : null : /* @__PURE__ */ n(J, { children: [
+    /* @__PURE__ */ t("div", { className: "fixed bottom-4 right-4", style: { zIndex: ne.fab }, children: /* @__PURE__ */ t("div", { className: "tooltip tooltip-left", "data-tip": "Nahlásit problém", children: /* @__PURE__ */ n(
       "button",
       {
         type: "button",
@@ -2055,7 +2092,7 @@ function xa() {
         className: "btn btn-circle btn-error shadow-lg transition-transform hover:scale-105 relative",
         "aria-label": "Nahlásit problém",
         children: [
-          /* @__PURE__ */ t(Nt, { size: 20 }),
+          /* @__PURE__ */ t(vt, { size: 20 }),
           /* @__PURE__ */ t(
             "span",
             {
@@ -2076,50 +2113,50 @@ function xa() {
         ]
       }
     ) }) }),
-    /* @__PURE__ */ t(xe, { open: r, onClose: () => a(!1) })
+    /* @__PURE__ */ t(Ne, { open: r, onClose: () => a(!1) })
   ] });
 }
 export {
-  je as ApiError,
-  wt as Button,
-  kt as Checkbox,
-  It as DocumentDropZone,
-  Ie as Input,
-  jt as ScreenshotPicker,
-  Tt as Select,
+  Le as ApiError,
+  kt as Button,
+  Tt as Checkbox,
+  jt as DocumentDropZone,
+  je as Input,
+  Lt as ScreenshotPicker,
+  St as Select,
   Be as TICKET_CATEGORY_BADGE_CLASS,
   K as TICKET_CATEGORY_LABELS,
-  Ke as TICKET_PRIORITY_BADGE_CLASS,
-  B as TICKET_PRIORITY_LABELS,
-  Me as TICKET_STATUS_BADGE_CLASS,
-  ue as TICKET_STATUS_LABELS,
-  da as TextInput,
-  St as Textarea,
-  Zt as TicketAuditTimeline,
-  Ht as TicketCommentComposer,
-  Wt as TicketComments,
-  xe as TicketCreateModal,
-  ta as TicketDetail,
-  ga as TicketDetailPage,
-  Ft as TicketRow,
-  Jt as TicketScreenshotLightbox,
-  xa as TicketsFab,
-  Pt as TicketsFilters,
-  fa as TicketsIndexPage,
-  Mt as TicketsList,
-  Dt as api,
+  Re as TICKET_PRIORITY_BADGE_CLASS,
+  R as TICKET_PRIORITY_LABELS,
+  Ke as TICKET_STATUS_BADGE_CLASS,
+  pe as TICKET_STATUS_LABELS,
+  ua as TextInput,
+  _t as Textarea,
+  Vt as TicketAuditTimeline,
+  Yt as TicketCommentComposer,
+  Jt as TicketComments,
+  Ne as TicketCreateModal,
+  na as TicketDetail,
+  Na as TicketDetailPage,
+  Kt as TicketRow,
+  ea as TicketScreenshotLightbox,
+  va as TicketsFab,
+  Ft as TicketsFilters,
+  xa as TicketsIndexPage,
+  Rt as TicketsList,
+  At as api,
   te as apiFetch,
-  Et as apiUpload,
-  se as cn,
-  Le as csrfHeaders,
-  Oe as extractErrorMessage,
-  ua as formatDate,
-  pa as formatDateLong,
-  Fe as formatDateTime,
-  ba as formatRelative,
-  ha as formatTime,
-  _t as getXsrfToken,
-  ma as isAbortError,
+  Dt as apiUpload,
+  re as cn,
+  Oe as csrfHeaders,
+  Fe as extractErrorMessage,
+  ha as formatDate,
+  ba as formatDateLong,
+  Me as formatDateTime,
+  ga as formatRelative,
+  fa as formatTime,
+  Ct as getXsrfToken,
+  pa as isAbortError,
   Pe as refreshCsrfCookie
 };
 //# sourceMappingURL=index.js.map

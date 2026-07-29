@@ -119,6 +119,33 @@ import { TicketsFab } from '@webyashopy/ticketing-system-ui';
 <TicketsFab />
 ```
 
+FAB se vykresluje na `z-index: 1100` — nad DaisyUI modaly (999), aby šlo tiket
+založit i z obrazovky s otevřeným modalem. Pokud má host aplikace vlastní
+overlay výš než 1100, přebij hodnoty v `resources/js/lib/z-layers.ts`.
+
+Po odeslání formuláře uživatel **zůstává na stránce**, kde byl — dostane jen
+toast s odkazem na nový tiket.
+
+### 7) Middleware `ShareTicketsBadge` (doporučené)
+
+```php
+// bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->web(append: [
+        \Webyashopy\Tickets\Http\Middleware\ShareTicketsBadge::class,
+    ]);
+})
+```
+
+Sdílí dva Inertia propy:
+
+- `ticketsOpenCount` — počet otevřených tiketů pro badge v hlavičce (lazy,
+  vyhodnotí se jen při partial reloadu, který si ho vyžádá)
+- `ticketsFlash.created` — data nově vytvořeného tiketu pro toast
+
+Bez middleware balíček funguje dál, jen toast po vytvoření tiketu nebude mít
+tlačítko „Zobrazit" a badge zůstane bez počtu.
+
 ## Architektura
 
 - **Skeleton:** Spatie Package Tools

@@ -8,9 +8,14 @@
 // tooltip zkrácen na „Schovat".
 // X badge je teď perfektní kruh přes explicit h-4 w-4 rounded-full
 // (DaisyUI badge-circle badge-xs s child ikonou se rozměry nevyrovnaly → vznikla šiška).
+// fix: z-index zvednut z z-50 na Z_LAYERS.fab — DaisyUI modal má
+// z-index 999, takže jakýkoli otevřený modal host aplikace FAB překryl
+// a nešlo nahlásit bug z obrazovky, kde se projevil.
 
 import { Bug, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+
+import { Z_LAYERS } from '../lib/z-layers';
 
 import { TicketCreateModal } from './TicketCreateModal';
 
@@ -45,7 +50,7 @@ export function TicketsFab() {
 
     return (
         <>
-            <div className="fixed bottom-4 right-4 z-50">
+            <div className="fixed bottom-4 right-4" style={{ zIndex: Z_LAYERS.fab }}>
                 {/* Hlavní FAB tlačítko — otevírá modal. btn-error pro vizuální */}
                 {/* odlišení od běžných primárních akcí (bug-tracker indikátor). */}
                 <div className="tooltip tooltip-left" data-tip="Nahlásit problém">

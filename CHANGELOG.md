@@ -8,11 +8,25 @@ verzování dle [SemVer](https://semver.org/lang/cs/).
 ## [Nezveřejněno]
 
 ### Změněno
+- Vytvoření tiketu už nepřesměrovává na jeho detail. Tiket se hlásí přes FAB
+  z libovolné stránky host aplikace a redirect uživatele vytrhl z rozdělané
+  práce. `TicketController::store()` nyní vrací `back()` (fallback na seznam
+  tiketů, když chybí Referer) a uživatel dostane toast „Ticket #ID byl
+  vytvořen" s tlačítkem „Zobrazit", které na detail pustí až na vyžádání.
+  Data pro toast jdou flash klíčem `tickets_created` → Inertia prop
+  `ticketsFlash.created` (sdílí `ShareTicketsBadge`). Bez zapojeného
+  middleware toast degraduje na prostou hlášku bez odkazu.
 - npm skript `prepare` (`npm run build`) — balíček lze instalovat přímo
   z gitu jako dependency; `dist/` se sestaví automaticky při `npm install`
   (zůstává mimo verzování).
 
 ### Opraveno
+- FAB „Nahlásit problém" překrývaly modaly host aplikace — měl `z-50`,
+  zatímco DaisyUI dává `.modal` z-index 999, takže z obrazovky s otevřeným
+  modalem (kde se chyba typicky projeví) nešlo tiket založit. Vrstvy jsou
+  nově v `resources/js/lib/z-layers.ts` (FAB 1100 < modal balíčku 1200 <
+  screenshot picker 1300) a aplikují se inline stylem, aby nezávisely na
+  Tailwind `content`/`@source` konfiguraci hostu.
 - Tlačítko „Kopírovat Claude prompt" v detailu tiketu generovalo prompt
   začínající příkazem `/plan`. Nyní vrací `/validate` — vstupní krok bugfix
   workflow (analýza bugu a jeho příčiny). Upravena i závěrečná instrukce

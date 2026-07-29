@@ -13,6 +13,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { Z_LAYERS } from '../lib/z-layers';
+
 interface ScreenshotPickerProps {
     onCapture: (file: File) => void;
     onCancel: () => void;
@@ -169,7 +171,10 @@ export function ScreenshotPicker({ onCapture, onCancel, maxSize }: ScreenshotPic
     // Error state — pokud capture selhal, zobrazit alert
     if (captureError) {
         return (
-            <div className="fixed inset-0 z-[70] flex items-center justify-center bg-base-content/60">
+            <div
+                className="fixed inset-0 flex items-center justify-center bg-base-content/60"
+                style={{ zIndex: Z_LAYERS.screenshotTop }}
+            >
                 <div role="alert" className="alert alert-error max-w-md">
                     <div className="flex flex-col gap-3">
                         <span>{captureError}</span>
@@ -190,7 +195,8 @@ export function ScreenshotPicker({ onCapture, onCancel, maxSize }: ScreenshotPic
             {/* Overlay — vždy renderován, html2canvas ho vyřízne přes ignoreElements */}
             <div
                 ref={containerRef}
-                className="fixed inset-0 z-[60] cursor-crosshair select-none overflow-hidden bg-base-content/40"
+                className="fixed inset-0 cursor-crosshair select-none overflow-hidden bg-base-content/40"
+                style={{ zIndex: Z_LAYERS.screenshotOverlay }}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
@@ -228,11 +234,12 @@ export function ScreenshotPicker({ onCapture, onCancel, maxSize }: ScreenshotPic
                 </button>
             </div>
 
-            {/* Loading spinner během capturing — z-[70] nad overlayem, ignoreElements ho vyloučí z capture */}
+            {/* Loading spinner během capturing — nad overlayem, ignoreElements ho vyloučí z capture */}
             {isCapturing && (
                 <div
                     ref={loadingRef}
-                    className="fixed inset-0 z-[70] flex items-center justify-center bg-base-content/60"
+                    className="fixed inset-0 flex items-center justify-center bg-base-content/60"
+                    style={{ zIndex: Z_LAYERS.screenshotTop }}
                 >
                     <span className="loading loading-spinner loading-lg text-primary" />
                 </div>
