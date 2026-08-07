@@ -57,10 +57,17 @@ return [
     | Prefix, middleware a pojmenování (`as`) rout balíčku. Host aplikace
     | upraví dle vlastní routovací struktury.
     |
+    | `attachment_middleware` platí JEN pro signed-route stream přílohy
+    | (`tickets.attachment.show`) — ta stojí mimo auth skupinu, protože
+    | platný podpis v URL je sám o sobě autorizace (markdown export /
+    | skill `buguj` čte screenshoty bez přihlášené session). Middleware
+    | `signed` se přidává vždy, sem patří jen podklad (default `web`).
+    |
     */
     'routes' => [
         'prefix' => env('TICKETS_ROUTE_PREFIX', ''),
         'middleware' => ['web', 'auth'],
+        'attachment_middleware' => ['web'],
         'as' => 'tickets.',
     ],
 

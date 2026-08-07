@@ -15,6 +15,7 @@ use Webyashopy\Tickets\Services\TicketAttachmentStorage;
  *
  * Ověřuje:
  *   - Signed URL se správným podpisem → 200 + obsah souboru
+ *   - Signed URL funguje i BEZ přihlášení (podpis je autorizace sám o sobě)
  *   - Manipulace s podpisem (?signature=invalid) → 403
  *   - Po uplynutí 24h → 403 (Carbon::setTestNow)
  */
@@ -49,6 +50,30 @@ class TicketAttachmentSignedUrlTest extends BaseTicketTest
         $response = $this->get($relativeUrl);
 
         $response->assertStatus(200);
+    }
+
+    public function test_signed_url_funguje_bez_prihlaseni(): void
+    {
+        Storage::fake('local');
+
+        $ticket = Ticket::factory()->create([
+            'tenant_id' => $this->tenantId,
+            'user_id' => $this->user->id,
+        ]);
+
+        $storage = app(TicketAttachmentStorage::class);
+        $attachment = $storage->store(
+            UploadedFile::fake()->image('shot.png', 100, 100),
+            $ticket,
+        );
+
+        $signedUrl = $attachment->signed_url;
+        $relativeUrl = parse_url($signedUrl, PHP_URL_PATH) . '?' . parse_url($signedUrl, PHP_URL_QUERY);
+
+        // Nepřihlášený požadavek — markdown export (skill buguj) čte
+        // screenshoty bez session, platný podpis musí stačit.
+        $this->assertGuest();
+        $this->get($relativeUrl)->assertStatus(200);
     }
 
     public function test_manipulace_se_signature_vraci_403(): void

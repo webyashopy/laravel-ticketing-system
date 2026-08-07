@@ -51,13 +51,6 @@ Route::middleware($middleware)
                 TicketAttachmentController::class, 'destroy',
             ])->name('attachments.destroy');
 
-            // Signed-route stream přílohy (TTL z config('tickets.signed_url_ttl_hours')).
-            // Validní podpis kontroluje 'signed' middleware, dále se v controlleru
-            // ověří, že attachment opravdu patří k danému ticketu.
-            Route::get('/{ticket:uuid}/attachments/{attachment:uuid}', [
-                TicketApiController::class, 'attachment',
-            ])->middleware('signed')->name('attachment.show');
-
             // Lineární komentáře pod ticketem.
             // Anti-IDOR: TicketCommentPolicy::create deleguje na TicketPolicy::view.
             Route::post('/{ticket:uuid}/comments', [
@@ -75,3 +68,20 @@ Route::middleware($middleware)
             TicketCommentController::class, 'destroy',
         ])->name('comments.destroy');
     });
+
+/*
+ * Signed-route stream přílohy — ZÁMĚRNĚ mimo auth skupinu. Platný podpis
+ * (HMAC z APP_KEY, TTL z config('tickets.signed_url_ttl_hours')) je sám
+ * o sobě autorizace: markdown export (skill `buguj`) čte screenshoty bez
+ * přihlášené session (Claude WebFetch). Controller navíc ověří, že příloha
+ * patří k ticketu z URL. Middleware lze přepsat přes
+ * config('tickets.routes.attachment_middleware').
+ */
+$attachmentMiddleware = (array) ($config['attachment_middleware'] ?? ['web']);
+
+Route::middleware([...$attachmentMiddleware, 'signed'])
+    ->prefix($prefix)
+    ->get('/tickets/{ticket:uuid}/attachments/{attachment:uuid}', [
+        TicketApiController::class, 'attachment',
+    ])
+    ->name($as . 'attachment.show');

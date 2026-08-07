@@ -8,6 +8,15 @@ verzování dle [SemVer](https://semver.org/lang/cs/).
 ## [Nezveřejněno]
 
 ### Změněno
+- Signed-route stream přílohy (`tickets.attachment.show`) stojí nově MIMO
+  auth route skupinu — platný podpis (HMAC z APP_KEY + TTL
+  `tickets.signed_url_ttl_hours`) je autorizace sám o sobě. Dosud route
+  dědila `['web', 'auth']` ze skupiny, takže signed URL z markdown exportu
+  (skill `buguj`) vracela nepřihlášenému čtenáři redirect na login a
+  screenshoty nešly zobrazit — v rozporu s deklarovaným účelem (WebFetch bez
+  session). Podklad middleware je konfigurovatelný přes nový klíč
+  `tickets.routes.attachment_middleware` (default `['web']`); `signed` se
+  přidává vždy. Kontrola, že příloha patří k ticketu z URL, zůstává.
 - Vytvoření tiketu už nepřesměrovává na jeho detail. Tiket se hlásí přes FAB
   z libovolné stránky host aplikace a redirect uživatele vytrhl z rozdělané
   práce. `TicketController::store()` nyní vrací `back()` (fallback na seznam
