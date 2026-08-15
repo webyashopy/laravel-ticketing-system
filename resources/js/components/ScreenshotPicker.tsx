@@ -164,6 +164,16 @@ export function ScreenshotPicker({ onCapture, onCancel, maxSize }: ScreenshotPic
             }, 'image/png');
         } catch (error) {
             const msg = error instanceof Error ? error.message : 'Neznámá chyba';
+            // Chybu i nahlásit, ne jen zobrazit — bez toho se přesný důvod selhání
+            // z produkce nikdy nedozvíme (viz T4A ticket #8c196548). reportError
+            // vyvolá globální 'error' event, který si host aplikace může poslat
+            // do vlastní telemetrie (T4A: /api/client-errors).
+            const err = error instanceof Error ? error : new Error(msg);
+            if (typeof window.reportError === 'function') {
+                window.reportError(err);
+            } else {
+                console.error('[ScreenshotPicker] capture selhal:', err);
+            }
             setCaptureError(`Pořízení screenshotu selhalo: ${msg}`);
         }
     }, [isDragging, selection, onCapture, maxSize]);

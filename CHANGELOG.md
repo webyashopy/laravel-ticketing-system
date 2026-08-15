@@ -7,6 +7,13 @@ verzování dle [SemVer](https://semver.org/lang/cs/).
 
 ## [Nezveřejněno]
 
+### Opraveno
+- `ScreenshotPicker`: selhání capture (html2canvas / `canvas.toBlob`) se nově
+  hlásí přes `window.reportError()` (fallback `console.error`), ne jen zobrazí
+  uživateli. Host aplikace tak chybu zachytí globálním `error` listenerem a
+  může ji poslat do vlastní telemetrie — dosud se přesný důvod selhání
+  z produkce nedal zjistit (T4A ticket #8c196548).
+
 ### Změněno
 - Signed-route stream přílohy (`tickets.attachment.show`) stojí nově MIMO
   auth route skupinu — platný podpis (HMAC z APP_KEY + TTL
