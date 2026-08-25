@@ -136,6 +136,37 @@ export function ScreenshotPicker({ onCapture, onCancel, maxSize }: ScreenshotPic
                 return false;
             };
 
+            // html2canvas-pro vytváří pro každý neprázdný ::before/::after
+            // náhradní uzel <html2canvaspseudoelement> a vkládá ho JAKO POTOMKA
+            // daného elementu. U void elementů to rozbije celý capture:
+            // DaisyUI v5 kreslí fajfku checkboxu přes ::before na samotném
+            // <input>, prohlížeč tam vloženého potomka nerenderuje, Chrome pro
+            // něj vrátí prázdnou deklaraci z getComputedStyle a parser knihovny
+            // spadne na prázdném background-color hláškou
+            // „Error parsing CSS component value, unexpected EOF".
+            // Uzly z klonu odstraníme dřív, než je parser uvidí — `onclone`
+            // běží před parseTree. Dopad: fajfka zaškrtnutého checkboxu se do
+            // snímku nevykreslí (rámeček ano), což je pro hlášení layoutu
+            // přijatelné. Viz T4A TASK-BUG-137a.
+            const onclone = (doc: Document): void => {
+                try {
+                    const VOID_TAGS = new Set([
+                        'INPUT', 'IMG', 'BR', 'HR', 'EMBED', 'AREA', 'BASE',
+                        'COL', 'LINK', 'META', 'PARAM', 'SOURCE', 'TRACK',
+                        'WBR', 'TEXTAREA', 'SELECT',
+                    ]);
+                    doc.querySelectorAll('html2canvaspseudoelement').forEach((node) => {
+                        const parent = node.parentElement;
+                        if (parent && VOID_TAGS.has(parent.tagName)) {
+                            node.remove();
+                        }
+                    });
+                } catch {
+                    // Guard nesmí nikdy shodit capture — když selže, zkusíme
+                    // snímek pořídit tak jako tak.
+                }
+            };
+
             const canvas = await html2canvas(document.body, {
                 x: window.scrollX + sel.x,
                 y: window.scrollY + sel.y,
@@ -145,6 +176,7 @@ export function ScreenshotPicker({ onCapture, onCancel, maxSize }: ScreenshotPic
                 useCORS: true,
                 logging: false,
                 ignoreElements,
+                onclone,
             });
 
             // 4) toBlob → File PNG s timestamp filename (Windows-safe — bez `:` `.`)
